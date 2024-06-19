@@ -1,5 +1,40 @@
-@import '../../scss/_color.scss';
+@import "../../scss/_color.scss";
 
 .list-card {
-    
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.2rem;
+  font-weight: bold;
+  background: #1f141f;
+  padding: 0.8rem;
+  line-height: 1.6rem;
+  font-size: 1.1rem;
+  font-weight: 200;
+  margin-bottom: 1.2rem;
+
+  .song-title {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .song-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+    .song-control {
+      margin-left: auto;
+    }
+  }
+
+  .song-details {
+    display: flex;
+    color: $text-light;
+
+    .song-raga {
+    }
+
+    .song-tala {
+      margin-left: auto;
+    }
+  }
 }
