@@ -1,7 +1,11 @@
-@import './scss/_color.scss';
+@import "./scss/_color.scss";
 
 .app {
   background: $black;
   color: $white;
   min-height: 100vh;
+}
+
+body {
+  // overflow: hidden;
 }

@@ -1,40 +1,72 @@
 @import "../../scss/_color.scss";
 
-.list-card {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.2rem;
-  font-weight: bold;
-  background: #1f141f;
-  padding: 0.8rem;
-  line-height: 1.6rem;
-  font-size: 1.1rem;
-  font-weight: 200;
-  margin-bottom: 1.2rem;
-
-  .song-title {
+.list-card-container {
+  position: relative;
+  .list-card {
     display: flex;
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    border-radius: 0.2rem;
+    font-weight: bold;
+    background: $card-bg-color;
+    background: $card-gradient;
+    padding: 0.8rem;
+    line-height: 1.6rem;
+    font-size: 1.1rem;
+    font-weight: 200;
+    margin-bottom: 1.2rem;
 
-    .song-name {
-      font-size: 1.3rem;
-      font-weight: 800;
+    .song-title {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      .song-name {
+        font-size: 1.3rem;
+        font-weight: 800;
+      }
+      .song-control {
+        margin-left: auto;
+      }
     }
-    .song-control {
-      margin-left: auto;
+
+    .song-details {
+      display: flex;
+      color: $text-light;
+
+      .song-raga {
+      }
+
+      .song-tala {
+        margin-left: auto;
+      }
     }
   }
-
-  .song-details {
+  .delete-option,
+  .edit-option {
+    background: linear-gradient(
+      270deg,
+      rgb(102, 32, 73) 0%,
+      rgb(199, 5, 53) 42%,
+      rgb(190, 0, 26) 71%
+    );
+    position: absolute;
     display: flex;
-    color: $text-light;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 77px;
+    font-size: 1.2rem;
+  }
 
-    .song-raga {
-    }
-
-    .song-tala {
-      margin-left: auto;
-    }
+  .edit-option {
+    background: linear-gradient(
+      270deg,
+      rgb(20, 84, 114) 0%,
+      rgb(20, 58, 83) 20%,
+      rgba(34, 13, 41, 1) 61%,
+      rgb(51, 11, 33) 97%
+    );
+    position: absolute;
+    right: 0;
   }
 }

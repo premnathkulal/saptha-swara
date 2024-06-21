@@ -1,0 +1,16 @@
+@import "../../scss/_color.scss";
+
+.floating-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $card-gradient;
+  padding: 1rem;
+  font-size: 2rem;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+}

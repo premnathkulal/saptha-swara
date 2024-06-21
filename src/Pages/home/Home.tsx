@@ -1,4 +1,7 @@
+import FloatingButton from "../../components/floating-button/FloatingButton";
+import HalfSheet from "../../components/half-sheet/HalfSheet";
 import ListCard from "../../components/list-card/ListCard";
+import SearchBar from "../../components/search-bar/SearchBar";
 import "./Home.scss";
 
 interface SongInfo {
@@ -58,9 +61,12 @@ const songsList = [
 const Home = () => {
     return (
         <div className="home">
+            <SearchBar />
             {songsList.map((songInfo) => (
                 <ListCard songInfo={songInfo} />
             ))}
+            {/* <HalfSheet /> */}
+            <FloatingButton />
         </div>
     );
 };
