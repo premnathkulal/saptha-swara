@@ -3,45 +3,53 @@ import FloatingButton from "../../components/floating-button/FloatingButton";
 import HalfSheet from "../../components/half-sheet/HalfSheet";
 import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
-import { useDispatch, useSelector } from 'react-redux'
-import { MyStore } from '../../store/store'
-import { closeHalfSheet, openHalfSheet } from "../../store/slices/app-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { MyStore } from "../../store/store";
+import { openHalfSheet } from "../../store/slices/app-slice";
+import { useEffect, useState } from "react";
 
 interface SongInfo {
     name: string;
     raga: string;
     tala: string;
+    type: string;
 }
 
-const songsList = [
+const songsData = [
     {
         name: "Maha Ganapathim",
         raga: "Natti",
+        type: "Divotional",
         tala: "Adi",
     },
     {
         name: "Chandra Chooda",
         raga: "Darbari Kanada",
+        type: "Divotional",
         tala: "Adi",
     },
     {
         name: "Pillangoviya",
         raga: "Mohana",
+        type: "Divotional",
         tala: "Adi",
     },
     {
         name: "Lambodhara",
         raga: "Malahari",
+        type: "Divotional",
         tala: "Roopaka",
     },
     {
         name: "Jayatu Jaya Vithala",
         raga: "Mohana",
+        type: "Divotional",
         tala: "Adi",
     },
     {
         name: "Nammamma Sharade",
         raga: "Hamsadwani",
+        type: "Divotional",
         tala: "Adi",
     },
     {
@@ -52,30 +60,73 @@ const songsList = [
     {
         name: "Banallu Neene",
         raga: "Mohana",
+        type: "Movie",
         tala: "Adi",
     },
     {
         name: "Bhagyada Lakshmi",
         raga: "Madhayamavathi",
+        type: "Divotional",
         tala: "Adi",
+    },
+    {
+        name: "Gajamukhadavage Ganapage",
+        raga: "Naati",
+        type: "Yakshagana",
+        tala: "Eka",
     },
 ];
 
 const Home = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const filterSlice = useSelector((store: MyStore) => store.search);
     const showHalftSheet = useSelector(
         (store: MyStore) => store.app.isHalfsheetOpen
-    )
+    );
+    const [songsList, setSongsList] = useState(songsData);
+
+    useEffect(() => {
+        handleSearch();
+    }, [filterSlice.searchKey]);
+
+    useEffect(() => {
+        console.log("Hello", filterSlice.filterOptions);
+        handleFilter();
+    }, [filterSlice.filterOptions]);
 
     const handleHalfSheet = () => {
-        dispatch(openHalfSheet())
-    }
+        dispatch(openHalfSheet());
+    };
+
+    const handleSearch = () => {
+        setSongsList(() =>
+            songsData.filter(({ name }) =>
+                name.toUpperCase().includes(filterSlice.searchKey)
+            )
+        );
+    };
+
+    const handleFilter = () => {
+        if (!filterSlice.filterOptions.length) {
+            setSongsList(songsData);
+        } else {
+            setSongsList(() =>
+                songsData.filter(({ type }) => {
+                    if (type) {
+                        return filterSlice.filterOptions.includes(type.toUpperCase());
+                    }
+                    return false;
+                })
+            );
+        }
+    };
 
     return (
         <div className="home">
             <SearchBar />
-            {songsList.map((songInfo) => (
-                <ListCard songInfo={songInfo} />
+            {!songsList.length && <div>No Data Found</div>}
+            {songsList.map((songInfo, index) => (
+                <ListCard songInfo={songInfo} key={index} />
             ))}
             {showHalftSheet && <HalfSheet />}
             <FloatingButton openHalfSheet={handleHalfSheet} />

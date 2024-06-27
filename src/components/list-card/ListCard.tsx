@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ListCard.scss";
-import { faClock, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useSwipe } from "../../hooks/useSwipe";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
@@ -17,7 +17,6 @@ interface ListCardProps {
 
 const ListCard = (props: ListCardProps) => {
     const { name, raga, tala } = props.songInfo;
-    const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const { onTouchStart, onTouchMove, onTouchEnd, touchDirection } = useSwipe();
 
