@@ -17,7 +17,7 @@
     align-items: center;
     justify-content: flex-end;
     flex-direction: column;
-    min-height: 52%;
+    min-height: 55%;
     width: 100%;
     background: $card-gradient;
     border-top-right-radius: 2.5rem;
@@ -36,14 +36,14 @@
 
       input {
         width: 100%;
-        height: 2.8rem;
+        height: 2rem;
         color: $border-color;
         background: hsl(323, 100%, 87%);
         font-weight: 800;
-        font-size: 1.2rem;
+        font-size: 1rem;
         outline: none;
         padding: 0.3rem;
-        margin: 1rem 0;
+        margin: 1.1rem 0;
         margin-top: 0;
         border: 2px solid $border-color;
         border-radius: 0.5rem;

@@ -6,6 +6,7 @@ const HalfSheet = () => {
             <div className="half-sheet">
                 <div className="text-input">
                     <input type="text" placeholder="Song Name" />
+                    <input type="text" placeholder="Song Type" />
                     <input type="text" placeholder="Song Raga" />
                     <input type="text" placeholder="Song Tala" />
                     <input type="text" placeholder="Refference Link" />

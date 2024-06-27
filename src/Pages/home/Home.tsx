@@ -65,7 +65,7 @@ const Home = () => {
             {songsList.map((songInfo) => (
                 <ListCard songInfo={songInfo} />
             ))}
-            {/* <HalfSheet /> */}
+            <HalfSheet />
             <FloatingButton />
         </div>
     );
