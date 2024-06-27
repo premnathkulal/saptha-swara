@@ -24,6 +24,13 @@
         font-size: 1.3rem;
         font-weight: 800;
       }
+      .remove-icon {
+        color: rgb(250, 98, 78);
+        margin-left: auto;
+        font-size: 1.3rem;
+        margin-top: -28px;
+        margin-right: -6px;
+      }
       .song-control {
         margin-left: auto;
       }
@@ -41,13 +48,12 @@
       }
     }
   }
-  .delete-option,
   .edit-option {
     background: linear-gradient(
       270deg,
-      rgb(102, 32, 73) 0%,
-      rgb(199, 5, 53) 42%,
-      rgb(190, 0, 26) 71%
+      rgb(129, 2, 80) 0%,
+      rgb(201, 33, 136) 42%,
+      rgb(196, 33, 128) 71%
     );
     position: absolute;
     display: flex;
@@ -58,15 +64,15 @@
     font-size: 1.2rem;
   }
 
-  .edit-option {
-    background: linear-gradient(
-      270deg,
-      rgb(20, 84, 114) 0%,
-      rgb(20, 58, 83) 20%,
-      rgba(34, 13, 41, 1) 61%,
-      rgb(51, 11, 33) 97%
-    );
-    position: absolute;
-    right: 0;
-  }
+  // .edit-option {
+  //   background: linear-gradient(
+  //     270deg,
+  //     rgb(20, 84, 114) 0%,
+  //     rgb(20, 58, 83) 20%,
+  //     rgba(34, 13, 41, 1) 61%,
+  //     rgb(51, 11, 33) 97%
+  //   );
+  //   position: absolute;
+  //   right: 0;
+  // }
 }

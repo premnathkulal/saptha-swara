@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ListCard.scss";
-import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useSwipe } from "../../hooks/useSwipe";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 interface SongInfo {
     name: string;
@@ -25,23 +26,16 @@ const ListCard = (props: ListCardProps) => {
     }, [touchDirection]);
 
     const resetSwipEvent = () => {
-        setShowDelete(false);
         setShowEdit(false);
     };
 
     const handleSwipe = () => {
         resetSwipEvent();
-        if (touchDirection === "right") setShowDelete(true);
-        else if (touchDirection === "left") setShowEdit(true);
+        if (touchDirection === "right") setShowEdit(true);
     };
 
     return (
         <div className="list-card-container">
-            {showDelete && (
-                <div className="delete-option">
-                    <FontAwesomeIcon icon={faTrashCan} />
-                </div>
-            )}
             {showEdit && (
                 <div className="edit-option">
                     <FontAwesomeIcon icon={faPen} />
@@ -55,6 +49,7 @@ const ListCard = (props: ListCardProps) => {
             >
                 <div className="song-title">
                     <div className="song-name">{name}</div>
+                    <FontAwesomeIcon className="remove-icon" icon={faTimes} />
                 </div>
                 <div className="song-details">
                     <div className="song-ragas">ರಾಗ: {raga}</div>
