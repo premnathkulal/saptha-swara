@@ -1,5 +1,14 @@
 @import "../../scss/_color.scss";
 
+@keyframes slidein {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .half-sheet-container {
   z-index: 1000;
   position: fixed;
@@ -23,6 +32,7 @@
     border-top-right-radius: 2.5rem;
     border-top-left-radius: 2.5rem;
     padding: 0 2rem;
+    animation: slidein 0.5s ease-in-out;
 
     .text-input {
       width: 100%;
