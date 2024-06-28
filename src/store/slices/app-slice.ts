@@ -3,17 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const appSlice = createSlice({
   name: "app",
   initialState: {
-    isHalfsheetOpen: false,
+    isAddEditOptionEnabled: false,
     isEditOption: false,
   },
   reducers: {
-    closeHalfSheet(state) {
+    closeAddEditOption(state) {
       document.body.style.overflow = "unset";
-      state.isHalfsheetOpen = false;
+      state.isAddEditOptionEnabled = false;
     },
-    openHalfSheet(state) {
+    openAddEditOption(state) {
       document.body.style.overflow = "hidden";
-      state.isHalfsheetOpen = true;
+      state.isAddEditOptionEnabled = true;
     },
     setIsEditOption(state, action) {
       state.isEditOption = action.payload;
@@ -21,6 +21,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { closeHalfSheet, openHalfSheet, setIsEditOption } =
+export const { closeAddEditOption, openAddEditOption, setIsEditOption } =
   appSlice.actions;
 export default appSlice.reducer;

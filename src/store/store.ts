@@ -4,7 +4,7 @@ import searchSlice from "./slices/search-slice";
 
 export interface MyStore {
   app: {
-    isHalfsheetOpen: boolean;
+    isAddEditOptionEnabled: boolean;
     isEditOption: boolean;
   };
   search: {

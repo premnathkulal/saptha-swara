@@ -1,3 +1,12 @@
 .home {
   padding: 0.8rem;
+
+  .no-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 18rem);
+    font-weight: bold;
+    font-size: 1.8rem;
+  }
 }

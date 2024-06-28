@@ -1,12 +1,12 @@
 import "./Home.scss";
 import FloatingButton from "../../components/floating-button/FloatingButton";
-import HalfSheet from "../../components/half-sheet/HalfSheet";
 import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
-import { openHalfSheet } from "../../store/slices/app-slice";
+import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useState } from "react";
+import AddEditForm from "../../components/add-edit-form/AddEditForm";
 
 interface SongInfo {
     name: string;
@@ -80,8 +80,8 @@ const songsData = [
 const Home = () => {
     const dispatch = useDispatch();
     const filterSlice = useSelector((store: MyStore) => store.search);
-    const showHalftSheet = useSelector(
-        (store: MyStore) => store.app.isHalfsheetOpen
+    const showAddEditOption = useSelector(
+        (store: MyStore) => store.app.isAddEditOptionEnabled
     );
     const [songsList, setSongsList] = useState(songsData);
 
@@ -95,7 +95,7 @@ const Home = () => {
     }, [filterSlice.filterOptions]);
 
     const handleHalfSheet = () => {
-        dispatch(openHalfSheet());
+        dispatch(openAddEditOption());
     };
 
     const handleSearch = () => {
@@ -124,11 +124,11 @@ const Home = () => {
     return (
         <div className="home">
             <SearchBar />
-            {!songsList.length && <div>No Data Found</div>}
+            {!songsList.length && <div className="no-item">No Song Found</div>}
             {songsList.map((songInfo, index) => (
                 <ListCard songInfo={songInfo} key={index} />
             ))}
-            {showHalftSheet && <HalfSheet />}
+            {showAddEditOption && <AddEditForm />}
             <FloatingButton openHalfSheet={handleHalfSheet} />
         </div>
     );

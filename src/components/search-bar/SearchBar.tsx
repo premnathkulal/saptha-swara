@@ -23,7 +23,7 @@ const SearchBar = () => {
         <div className="search-bar-container">
             <div className="search-bar">
                 <input
-                    type="text"
+                    type="search"
                     placeholder="Search Teaxt"
                     onChange={(e) => handleSearch(e as ChangeEvent)}
                 />
