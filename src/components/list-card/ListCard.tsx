@@ -51,8 +51,8 @@ const ListCard = (props: ListCardProps) => {
                     <FontAwesomeIcon className="remove-icon" icon={faTimes} />
                 </div>
                 <div className="song-details">
-                    <div className="song-ragas">ರಾಗ: {raga}</div>
-                    <div className="song-tala">ತಾಳ: {tala}</div>
+                    <div className="song-ragas">Raga: {raga}</div>
+                    <div className="song-tala">Tala: {tala}</div>
                 </div>
             </div>
         </div>
