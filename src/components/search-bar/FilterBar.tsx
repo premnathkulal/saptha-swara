@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import "./FilterBar.scss";
+import { useDispatch, useSelector } from "react-redux";
 import { setFilterKey } from "../../store/slices/search-slice";
 import { MyStore } from "../../store/store";
 import { useEffect, useState } from "react";

@@ -24,7 +24,7 @@ const SearchBar = () => {
             <div className="search-bar">
                 <input
                     type="search"
-                    placeholder="Search Teaxt"
+                    placeholder="Search Song Name"
                     onChange={(e) => handleSearch(e as ChangeEvent)}
                 />
                 <div className="filter-icon" onClick={handleShowFilter}>

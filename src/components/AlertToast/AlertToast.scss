@@ -8,14 +8,13 @@
   .alert-toast {
     padding: 0.8rem;
     margin: 1rem;
-    background: #ffffff;
-    color: rgb(95, 1, 53);
+    background: #630b37;
+    color: #ffffff;
     font-weight: bold;
     font-size: 1rem;
-    border-left: 0.5rem solid green;
+    border-left: 0.2rem solid rgb(95, 1, 53);
     display: flex;
     align-items: center;
-    box-shadow: -1px 7px 15px rgb(202, 178, 178);
 
     .icon {
       margin-left: auto;

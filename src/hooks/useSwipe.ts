@@ -9,6 +9,10 @@ const useSwipe = () => {
 
   const minSwipeDistance = 50;
 
+  const resetActions = () => {
+    setTouchDirection("");
+  };
+
   const onTouchStart = (e: any) => {
     setTouchEnd(null); // otherwise the swipe is fired even with usual touch events
     setTouchStart(e.targetTouches[0].clientX);
@@ -41,6 +45,7 @@ const useSwipe = () => {
     onTouchMove,
     onTouchEnd,
     touchDirection,
+    resetActions,
   };
 };
 
