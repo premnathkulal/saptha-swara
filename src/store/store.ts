@@ -11,6 +11,7 @@ export interface MyStore {
     showToastMessage: boolean;
     toastMessage: string;
     editInfo: SongInfo;
+    showSearchFilter: boolean;
   };
   search: {
     searchKey: string;
