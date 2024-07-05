@@ -60,10 +60,17 @@ const useSongInfo = () => {
     const starCountRef = await ref(db, `songs`);
     await onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
-      const newD = Object.keys(data).reduce((acc: SongInfo[], curr: string) => {
-        return [...acc, { ...data[curr] }];
-      }, []);
-      dispatch(setSongInfo(newD));
+      if (data) {
+        const newIfo = Object.keys(data).reduce(
+          (acc: SongInfo[], curr: string) => {
+            return [...acc, { ...data[curr] }];
+          },
+          []
+        );
+        dispatch(setSongInfo(newIfo));
+      } else {
+        dispatch(setSongInfo([]));
+      }
     });
   };
 

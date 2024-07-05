@@ -1,0 +1,48 @@
+@import "../../scss/_color.scss";
+
+.filter-selection {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  .search-bar-container {
+    padding: 0.5rem;
+
+    .search-bar {
+      .filter-icon {
+        opacity: 0.5;
+        font-size: 2rem;
+      }
+    }
+  }
+
+  .list-contaner {
+    // padding: 0 0.8rem;
+    margin-top: 0.3rem;
+    background: rgb(90, 3, 57);
+    overflow-y: auto;
+    height: calc(100vh - 8.5rem);
+
+    .list {
+      padding: 0 1rem;
+
+      .list-text {
+        padding: 1rem 0;
+        border-bottom: 1px solid rgb(204, 17, 4);
+      }
+      &:hover {
+        background: rgba(189, 171, 171, 0.4);
+      }
+
+      &:last-child {
+        border-bottom: unset;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+}

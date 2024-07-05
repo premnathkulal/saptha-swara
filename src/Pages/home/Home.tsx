@@ -67,10 +67,10 @@ const Home = () => {
     return (
         <div className="home">
             <SearchBar />
-            {!songsList.length && <div className="no-item">No Song Found</div>}
-            {songsList.map((songInfo, index) => (
-                <ListCard songInfo={songInfo} key={index} />
-            ))}
+            {(!songsList || !songsList.length) ? <div className="no-item">No Song Found!</div> :
+                songsList.map((songInfo, index) => (
+                    <ListCard songInfo={songInfo} key={index} />
+                ))}
             {showAddEditOption && <AddEditForm />}
             <FloatingButton openHalfSheet={handleHalfSheet} />
         </div>

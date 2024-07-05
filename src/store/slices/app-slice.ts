@@ -8,6 +8,7 @@ const appSlice = createSlice({
     showToastMessage: false,
     toastMessage: "",
     editInfo: null,
+    showSearchFilter: false,
   },
   reducers: {
     closeAddEditOption(state) {
@@ -33,6 +34,12 @@ const appSlice = createSlice({
     hideToastMessage(state) {
       state.showToastMessage = false;
     },
+    setShowSearchFilter(state) {
+      state.showSearchFilter = true;
+    },
+    hideSearchFilter(state) {
+      state.showSearchFilter = false;
+    },
   },
 });
 
@@ -42,5 +49,7 @@ export const {
   setIsEditOption,
   showToastMessage,
   hideToastMessage,
+  setShowSearchFilter,
+  hideSearchFilter,
 } = appSlice.actions;
 export default appSlice.reducer;

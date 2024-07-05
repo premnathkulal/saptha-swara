@@ -1,10 +1,14 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
-import { closeAddEditOption } from "../../store/slices/app-slice";
+import {
+    closeAddEditOption,
+    setShowSearchFilter,
+} from "../../store/slices/app-slice";
 import "./AddEditForm.scss";
 import HalfSheet from "../half-sheet/HalfSheet";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
+import FilterSelection, { DataItem } from "../filter-selection/FilterSelection";
 
 const AddEditForm = () => {
     const intialSongInfo = {
@@ -16,12 +20,21 @@ const AddEditForm = () => {
     };
 
     const { setSongDetails, updateSongDetails } = useSongInfo();
+    const showFilter = useSelector(
+        (store: MyStore) => store.app.showSearchFilter
+    );
     const dispatch = useDispatch();
     const isEditOptionEnabled = useSelector(
         (store: MyStore) => store.app.isEditOption
     );
     const editInfo = useSelector((store: MyStore) => store.app.editInfo);
     const [songInfo, setSongInfo] = useState<SongInfo>(intialSongInfo);
+    const [showSelectionItem, setShowSelectionIem] = useState(true);
+    const [selectionType, setSelectionType] = useState<DataItem>(DataItem.Default);
+
+    useEffect(() => {
+        setShowSelectionIem(showFilter);
+    }, [showFilter]);
 
     useEffect(() => {
         if (editInfo) {
@@ -52,6 +65,20 @@ const AddEditForm = () => {
         dispatch(closeAddEditOption());
     };
 
+    const handleSearchFilter = (e: React.FormEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        dispatch(setShowSearchFilter());
+        const inputType = (e.target as HTMLInputElement).id as DataItem;
+        setSelectionType(inputType);
+    };
+
+    const handleSelectItem = (item: string, id: string) => {
+        setSongInfo({
+            ...songInfo,
+            [id]: item,
+        });
+    }
+
     return (
         <div
             className="add-edit-form"
@@ -60,6 +87,7 @@ const AddEditForm = () => {
             <HalfSheet>
                 <div className="text-input">
                     <input
+                        id="name"
                         type="text"
                         placeholder="Song Name"
                         name="name"
@@ -69,6 +97,7 @@ const AddEditForm = () => {
                         }
                     />
                     <input
+                        id="type"
                         type="text"
                         placeholder="Song Type"
                         name="type"
@@ -76,8 +105,11 @@ const AddEditForm = () => {
                         onChange={(e: React.FormEvent<HTMLInputElement>) =>
                             handleInputChange(e)
                         }
+                        onClick={(e) => handleSearchFilter(e)}
+                        readOnly
                     />
                     <input
+                        id="raga"
                         type="text"
                         placeholder="Song Raga"
                         name="raga"
@@ -85,16 +117,22 @@ const AddEditForm = () => {
                         onChange={(e: React.FormEvent<HTMLInputElement>) =>
                             handleInputChange(e)
                         }
+                        onFocus={(e) => handleSearchFilter(e)}
+                        readOnly
                     />
                     <input
-                        type="text"
-                        placeholder="Song Tala"
-                        value={songInfo.tala}
+                        id="tala"
                         name="tala"
+                        type="text"
+                        placeholder="Select Tala"
+                        value={songInfo.tala}
                         onChange={(e: React.FormEvent<HTMLInputElement>) =>
                             handleInputChange(e)
                         }
+                        onFocus={(e) => handleSearchFilter(e)}
+                        readOnly
                     />
+
                     <input
                         type="text"
                         placeholder="Refference Link"
@@ -109,6 +147,12 @@ const AddEditForm = () => {
                     {!editInfo ? "Add" : "Edit"} To The List
                 </button>
             </HalfSheet>
+            {showSelectionItem && (
+                <FilterSelection
+                    selectionType={selectionType}
+                    selectItem={(item: string, id: string) => handleSelectItem(item, id)}
+                />
+            )}
         </div>
     );
 };
