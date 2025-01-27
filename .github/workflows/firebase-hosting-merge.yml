@@ -18,4 +18,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PREMS_CREATIONS_9E2BE }}
           channelId: live
           projectId: prems-creations-9e2be
-          target: hosting:raga-swara-tala
+          target: raga-swara-tala
