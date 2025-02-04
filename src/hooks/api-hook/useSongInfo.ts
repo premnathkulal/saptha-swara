@@ -67,6 +67,7 @@ const useSongInfo = () => {
           },
           []
         );
+        newIfo.sort((a, b) => a.name.localeCompare(b.name));
         dispatch(setSongInfo(newIfo));
       } else {
         dispatch(setSongInfo([]));
