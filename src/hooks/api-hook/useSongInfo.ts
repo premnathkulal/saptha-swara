@@ -42,22 +42,22 @@ const useSongInfo = () => {
   const setSongDetails = (songInfo: SongInfo) => {
     const id = generateUUID();
     const newData = { ...songInfo, id };
-    set(ref(db, `songs/${id}`), newData);
+    set(ref(db, `saptha-swara/songs/${id}`), newData);
     dispatch(showToastMessage("New song added!"));
   };
 
   const updateSongDetails = (songInfo: SongInfo) => {
-    set(ref(db, `songs/${songInfo.id}`), songInfo);
+    set(ref(db, `saptha-swara/songs/${songInfo.id}`), songInfo);
     dispatch(showToastMessage("Song info updated!"));
   };
 
   const removeSongDetails = (id: string) => {
-    remove(ref(db, `songs/${id}`));
+    remove(ref(db, `saptha-swara/songs/${id}`));
     dispatch(showToastMessage("Song info removed!"));
   };
 
   const readSongDetails = async () => {
-    const starCountRef = await ref(db, `songs`);
+    const starCountRef = await ref(db, `saptha-swara/songs`);
     await onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {

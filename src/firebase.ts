@@ -1,23 +1,42 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-import { getDatabase } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getDatabase, ref, set, get, child } from "firebase/database";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAiEdWKRy5qnrJic1ly2Buf0D1A9zHYRJw",
-  authDomain: "sapta-swara.firebaseapp.com",
-  projectId: "sapta-swara",
-  storageBucket: "sapta-swara.appspot.com",
-  messagingSenderId: "1097239085790",
-  appId: "1:1097239085790:web:bf7e58da5e4011a2c7b84f",
-  measurementId: "G-DLM3YK7C6K",
+  apiKey: "AIzaSyCf-yEbbWqdytCo3ZMxVrSsximgPLxoo-w",
+  authDomain: "prems-creations-9e2be.firebaseapp.com",
+  projectId: "prems-creations-9e2be",
+  storageBucket: "prems-creations-9e2be.firebasestorage.app",
+  messagingSenderId: "208957255376",
+  appId: "1:208957255376:web:1ad89ad7bd44eacf2578d5",
+  measurementId: "G-GRH07DFDWS",
+  databaseURL: "https://prems-creations-9e2be-default-rtdb.firebaseio.com/",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 export const db = getDatabase(app);
+
+// Function to write data to the database
+export function writeUserData(userId: string, name: string, email: string) {
+  set(ref(db, "users/" + userId), {
+    username: name,
+    email: email,
+  });
+}
+
+// Function to read data from the database
+export async function readUserData(userId: string) {
+  const dbRef = ref(db);
+  try {
+    const snapshot = await get(child(dbRef, `users/${userId}`));
+    if (snapshot.exists()) {
+      console.log(snapshot.val());
+    } else {
+      console.log("No data available");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
