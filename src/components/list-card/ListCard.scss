@@ -109,17 +109,40 @@
         align-items: center;
         gap: 0.6rem;
 
-        .song-ragas {
-          font-weight: 500;
-        }
-
         .raga-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.15rem 0.5rem 0.15rem 0.55rem;
+          border-radius: 100px;
+          background: $accent-subtle;
+          border: 1px solid transparent;
           cursor: pointer;
-          transition: color $transition-fast;
+          transition: all $transition-fast;
+          font-weight: 600;
+          font-size: 0.82rem;
+          color: $accent-light;
+          user-select: none;
+
+          .raga-link-arrow {
+            font-size: 0.5rem;
+            opacity: 0.5;
+            transition: transform $transition-fast, opacity $transition-fast;
+          }
 
           &:hover {
-            color: $accent-light;
-            text-decoration: underline;
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-1px);
+
+            .raga-link-arrow {
+              transform: translateX(2px);
+              opacity: 1;
+            }
+          }
+
+          &:active {
+            transform: translateY(0);
           }
         }
 

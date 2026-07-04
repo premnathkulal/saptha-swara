@@ -5,7 +5,7 @@ import {
 } from "../../hooks/api-hook/useSongInfo";
 import { useDispatch } from "react-redux";
 import { openAddEditOption } from "../../store/slices/app-slice";
-import { faPen, faTrash, faEllipsisV, faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash, faEllipsisV, faHeart as faHeartSolid, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -97,22 +97,17 @@ const ListCard = (props: ListCardProps) => {
         <div className="song-details">
           <div className="song-details-row">
             <div
-              className="song-ragas raga-link"
+              className="raga-link"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/raga/${encodeURIComponent(raga)}`);
               }}
             >
-              {raga}
+              <span className="raga-link-label">{raga}</span>
+              <FontAwesomeIcon icon={faChevronRight} className="raga-link-arrow" />
             </div>
             {tala && <div className="song-tala">{tala}</div>}
           </div>
-          <span
-            className="song-type-badge"
-            style={{ background: typeColor }}
-          >
-            {type}
-          </span>
         </div>
       </div>
       {props.isMenuOpen && (
