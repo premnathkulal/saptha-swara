@@ -13,12 +13,12 @@ import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
-const typeColors: Record<string, string> = {
-  DIVOTIONAL: "#f59e0b",
-  MOVIE: "#3b82f6",
-  YAKSHAGANA: "#10b981",
-  FOLK: "#8b5cf6",
-};
+// const typeColors: Record<string, string> = {
+//   DIVOTIONAL: "#f59e0b",
+//   MOVIE: "#3b82f6",
+//   YAKSHAGANA: "#10b981",
+//   FOLK: "#8b5cf6",
+// };
 
 interface ListCardProps {
   songInfo: SongInfo;
@@ -29,7 +29,15 @@ interface ListCardProps {
 
 const ListCard = (props: ListCardProps) => {
   // const dispatch = useDispatch();
-  const { id, name, type, raga, tala, refLink, isFavorite } = props.songInfo;
+  const {
+    id,
+    name,
+    // type,
+    raga,
+    tala,
+    refLink,
+    isFavorite,
+  } = props.songInfo;
   const {
     // removeSongDetails,
     toggleFavorite,
@@ -53,11 +61,11 @@ const ListCard = (props: ListCardProps) => {
     if (id) toggleFavorite(id, !!isFavorite);
   };
 
-  const handleMenuToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    props.onToggleMenu();
-  };
+  // const handleMenuToggle = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  //   props.onToggleMenu();
+  // };
 
   const handleCardClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
