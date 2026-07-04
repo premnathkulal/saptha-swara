@@ -1,11 +1,14 @@
 import "./ListCard.scss";
+import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
+// import { useDispatch } from "react-redux";
+// import { openAddEditOption } from "../../store/slices/app-slice";
 import {
-  SongInfo,
-  useSongInfo,
-} from "../../hooks/api-hook/useSongInfo";
-import { useDispatch } from "react-redux";
-import { openAddEditOption } from "../../store/slices/app-slice";
-import { faPen, faTrash, faEllipsisV, faHeart as faHeartSolid, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+  // faPen,
+  // faTrash,
+  // faEllipsisV,
+  faHeart as faHeartSolid,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -25,30 +28,25 @@ interface ListCardProps {
 }
 
 const ListCard = (props: ListCardProps) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const { id, name, type, raga, tala, refLink, isFavorite } = props.songInfo;
   const {
-    id,
-    name,
-    type,
-    raga,
-    tala,
-    refLink,
-    isFavorite,
-  } = props.songInfo;
-  const { removeSongDetails, toggleFavorite } = useSongInfo();
+    // removeSongDetails,
+    toggleFavorite,
+  } = useSongInfo();
   const navigate = useNavigate();
 
-  const handleRemove = () => {
-    if (id) removeSongDetails(id);
-    props.onToggleMenu();
-  };
+  // const handleRemove = () => {
+  //   if (id) removeSongDetails(id);
+  //   props.onToggleMenu();
+  // };
 
-  const handleEdit = () => {
-    props.onToggleMenu();
-    dispatch(openAddEditOption(props.songInfo));
-  };
+  // const handleEdit = () => {
+  //   props.onToggleMenu();
+  //   dispatch(openAddEditOption(props.songInfo));
+  // };
 
-  const typeColor = typeColors[type.toUpperCase()] || "#606078";
+  // const typeColor = typeColors[type.toUpperCase()] || "#606078";
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -104,7 +102,10 @@ const ListCard = (props: ListCardProps) => {
               }}
             >
               <span className="raga-link-label">{raga}</span>
-              <FontAwesomeIcon icon={faChevronRight} className="raga-link-arrow" />
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                className="raga-link-arrow"
+              />
             </div>
             {tala && <div className="song-tala">{tala}</div>}
           </div>

@@ -1,9 +1,9 @@
 import "./Home.scss";
 import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
-import { openAddEditOption } from "../../store/slices/app-slice";
+// import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useMemo, useState } from "react";
 import AddEditForm from "../../components/add-edit-form/AddEditForm";
 import OfflineBanner from "../../components/offline-banner/OfflineBanner";
@@ -11,12 +11,12 @@ import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
 import { addOnlineListener } from "../../utils/offlineCache";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { faPlusCircle, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 type SortField = "name" | "raga" | "tala" | "type";
 
 const Home = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const songInformation = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
   );
@@ -52,7 +52,9 @@ const Home = () => {
       setIsDark(true);
       document.documentElement.classList.remove("light-mode");
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       setIsDark(prefersDark);
       if (!prefersDark) document.documentElement.classList.add("light-mode");
     }
@@ -65,12 +67,14 @@ const Home = () => {
     setIsDark(next);
     html.classList.toggle("light-mode", !next);
     localStorage.setItem("theme", next ? "dark" : "light");
-    requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove("theming")));
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => html.classList.remove("theming")),
+    );
   };
 
-  const handleHalfSheet = () => {
-    dispatch(openAddEditOption(false));
-  };
+  // const handleHalfSheet = () => {
+  //   dispatch(openAddEditOption(false));
+  // };
 
   const handleSortChange = (field: SortField) => {
     if (sortBy === field) {
@@ -140,7 +144,11 @@ const Home = () => {
       <div className="header-bar">
         <h1 className="app-title">Saptha Swara</h1>
         <div className="header-actions">
-          <button className="theme-btn" onClick={toggleTheme} aria-label="Toggle theme">
+          <button
+            className="theme-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
             <FontAwesomeIcon icon={isDark ? faMoon : faSun} />
           </button>
           {/* <button className="add-btn" onClick={handleHalfSheet}>
@@ -181,7 +189,7 @@ const Home = () => {
             isMenuOpen={activeMenuId === songInfo.id}
             onToggleMenu={() =>
               setActiveMenuId((prev) =>
-                prev === songInfo.id ? null : songInfo.id ?? null,
+                prev === songInfo.id ? null : (songInfo.id ?? null),
               )
             }
           />
