@@ -89,29 +89,38 @@ interface LegendItem {
   cls: string;
 }
 
-const NOTE_MAP: Record<string, string> = {
-  S: "C4",
-  "R\u2081": "C#4",
-  "R\u2082": "D4",
-  "R\u2083/G\u2082": "D#4",
-  "G\u2083": "E4",
-  "M\u2081": "F4",
-  "M\u2082": "F#4",
-  P: "G4",
-  "D\u2081": "G#4",
-  "D\u2082": "A4",
-  "D\u2083/N\u2082": "A#4",
-  "N\u2083": "B4",
-  "\u1E60": "C5",
-};
+const PITCHES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
-function scaleToNotes(scale: string): string[] {
+function buildNoteMap(saIndex: number): Record<string, string> {
+  const getPitch = (semitoneOffset: number) => {
+    const idx = (saIndex + semitoneOffset) % 12;
+    const octave = 4 + Math.floor((saIndex + semitoneOffset) / 12);
+    return `${PITCHES[idx]}${octave}`;
+  };
+  return {
+    S: getPitch(0),
+    "R\u2081": getPitch(1),
+    "R\u2082": getPitch(2),
+    "R\u2083/G\u2082": getPitch(3),
+    "G\u2083": getPitch(4),
+    "M\u2081": getPitch(5),
+    "M\u2082": getPitch(6),
+    P: getPitch(7),
+    "D\u2081": getPitch(8),
+    "D\u2082": getPitch(9),
+    "D\u2083/N\u2082": getPitch(10),
+    "N\u2083": getPitch(11),
+    "\u1E60": getPitch(12),
+  };
+}
+
+function scaleToNotes(scale: string, map: Record<string, string>): string[] {
   const tokens = scale.split(/\s+/);
   const notes: string[] = [];
   for (const token of tokens) {
     const ids = noteToKeyIds(token);
     for (const id of ids) {
-      const note = NOTE_MAP[id];
+      const note = map[id];
       if (note && !notes.includes(note)) notes.push(note);
     }
   }
@@ -126,6 +135,7 @@ const LEGEND: LegendItem[] = [
 
 const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
   const [filter, setFilter] = useState<Filter>("all");
+  const [saIndex, setSaIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [activeNote, setActiveNote] = useState<string | null>(null);
   const [pressedKey, setPressedKey] = useState<string | null>(null);
@@ -133,6 +143,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
   const timerRef = useRef<ReturnType<typeof setInterval>>();
   const aroNotes = parseScale(aarohana);
   const avaroNotes = parseScale(avarohana);
+  const noteMap = buildNoteMap(saIndex);
 
   const startedRef = useRef(false);
 
@@ -163,7 +174,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
       await startAudio();
       setPlaying(true);
       setActiveNote(null);
-      const notes = scaleToNotes(scale);
+      const notes = scaleToNotes(scale, noteMap);
       const synth = synthRef.current;
       if (!synth) return;
 
@@ -185,15 +196,30 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
       playNext();
       timerRef.current = setInterval(playNext, 280);
     },
-    [startAudio],
+    [startAudio, noteMap],
   );
 
   return (
     <div className="raga-keyboard">
+      <div className="sa-selector">
+        <span className="sa-label">Sā =</span>
+        <div className="sa-options">
+          {PITCHES.map((p, i) => (
+            <button
+              key={p}
+              className={`sa-btn${i === saIndex ? " active" : ""}${p.includes("#") ? " sharp" : ""}`}
+              onClick={() => setSaIndex(i)}
+            >
+              <span className="sa-btn-text">{p}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="keyboard-keys">
         <div className="white-keys">
           {WHITE_KEYS.map((key) => {
-            const note = NOTE_MAP[key.id];
+            const note = noteMap[key.id];
             return (
               <div
                 key={key.id}
@@ -208,7 +234,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
 
         <div className="black-keys">
           {BLACK_KEYS.map((key) => {
-            const note = NOTE_MAP[key.id];
+            const note = noteMap[key.id];
             return (
               <div
                 key={key.id}

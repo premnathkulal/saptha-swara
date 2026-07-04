@@ -3,6 +3,98 @@
 .raga-keyboard {
   margin-bottom: 0.8rem;
 
+  .sa-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+    justify-content: center;
+
+    .sa-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: $bg-card;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid $border;
+    }
+
+    .sa-options {
+      display: flex;
+      gap: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid $border;
+      background: $bg-card;
+
+      .sa-btn {
+        font-size: 0.62rem;
+        font-weight: 700;
+        width: 26px;
+        height: 26px;
+        border: none;
+        background: transparent;
+        color: $text-secondary;
+        cursor: pointer;
+        transition: all 0.15s;
+        padding: 0;
+        position: relative;
+
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 3px;
+          border-radius: 4px;
+          transition: all 0.2s;
+        }
+
+        &:hover::before {
+          background: $bg-card-hover;
+        }
+
+        &:active {
+          transform: scale(0.92);
+        }
+
+        &.active {
+          color: white;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+          &::before {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+          }
+
+          .sa-btn-text {
+            position: relative;
+            z-index: 1;
+          }
+        }
+
+        &.sharp {
+          color: $text-muted;
+          font-size: 0.55rem;
+
+          &.active {
+            color: white;
+          }
+        }
+
+        .sa-btn-text {
+          position: relative;
+          z-index: 1;
+        }
+      }
+
+      .sa-btn + .sa-btn {
+        border-left: 1px solid $border;
+      }
+    }
+  }
+
   .keyboard-keys {
     position: relative;
     height: 130px;
@@ -54,20 +146,33 @@
 
       &.active {
         &.aro {
-          background: rgba(139, 92, 246, 0.15);
-          border-color: rgba(139, 92, 246, 0.4);
-          .key-label { color: #a78bfa; }
+          background: linear-gradient(180deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.35) 100%);
+          border-color: rgba(139, 92, 246, 0.6);
+          border-top: 3px solid #a78bfa;
+
+          .key-label {
+            color: #c4b5fd;
+            &::before { content: "↑"; margin-right: 1px; font-size: 0.5rem; }
+          }
         }
         &.avaro {
-          background: rgba(59, 130, 246, 0.15);
-          border-color: rgba(59, 130, 246, 0.4);
-          .key-label { color: #60a5fa; }
+          background: linear-gradient(0deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.35) 100%);
+          border-color: rgba(59, 130, 246, 0.6);
+          border-bottom: 3px solid #60a5fa;
+
+          .key-label {
+            color: #93c5fd;
+            &::before { content: "↓"; margin-right: 1px; font-size: 0.5rem; }
+          }
         }
         &.both {
-          background: linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.12));
-          border-color: rgba(139, 92, 246, 0.5);
+          background: linear-gradient(180deg, rgba(139, 92, 246, 0.35) 0%, rgba(59, 130, 246, 0.35) 100%);
+          border-color: rgba(139, 92, 246, 0.7);
+          border-top: 3px solid #a78bfa;
+          border-bottom: 3px solid #60a5fa;
+
           .key-label {
-            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            background: linear-gradient(135deg, #c4b5fd, #93c5fd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -125,16 +230,23 @@
 
       &.active {
         &.aro {
-          background: #7c3aed;
-          .key-label { color: #ddd6fe; }
+          background: linear-gradient(180deg, #4c1d95 0%, #6d28d9 100%);
+          border-top: 2px solid #c4b5fd;
+
+          .key-label::after { content: "↑"; margin-top: 1px; font-size: 0.4rem; }
         }
         &.avaro {
-          background: #2563eb;
-          .key-label { color: #dbeafe; }
+          background: linear-gradient(0deg, #1e3a8a 0%, #1d4ed8 100%);
+          border-bottom: 2px solid #93c5fd;
+
+          .key-label::after { content: "↓"; margin-top: 1px; font-size: 0.4rem; }
         }
         &.both {
-          background: linear-gradient(180deg, #7c3aed 0%, #2563eb 100%);
-          .key-label { color: #e0e7ff; }
+          background: linear-gradient(180deg, #4c1d95 0%, #1e3a8a 100%);
+          border-top: 2px solid #c4b5fd;
+          border-bottom: 2px solid #93c5fd;
+
+          .key-label { color: #c7d2fe; }
         }
       }
 
