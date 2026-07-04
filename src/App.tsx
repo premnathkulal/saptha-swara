@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.scss'
 import Home from './Pages/home/Home'
 import RagaDetails from './Pages/raga-details/RagaDetails'
+import Profile from './Pages/profile/Profile'
 import { MyStore } from './store/store'
 import AlertToast from './components/AlertToast/AlertToast'
 
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/raga/:ragaName" element={<RagaDetails />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </BrowserRouter>

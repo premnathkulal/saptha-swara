@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
 // import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AddEditForm from "../../components/add-edit-form/AddEditForm";
 import OfflineBanner from "../../components/offline-banner/OfflineBanner";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
@@ -17,6 +18,7 @@ type SortField = "name" | "raga" | "tala" | "type";
 
 const Home = () => {
   // const dispatch = useDispatch();
+  const navigate = useNavigate();
   const songInformation = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
   );
@@ -151,9 +153,15 @@ const Home = () => {
           >
             <FontAwesomeIcon icon={isDark ? faMoon : faSun} />
           </button>
-          {/* <button className="add-btn" onClick={handleHalfSheet}>
-            <FontAwesomeIcon icon={faPlusCircle} />
-          </button> */}
+          <div
+            className="profile-avatar"
+            onClick={() => navigate("/profile")}
+            role="button"
+            tabIndex={0}
+            aria-label="Profile"
+          >
+            SS
+          </div>
         </div>
       </div>
       <OfflineBanner />

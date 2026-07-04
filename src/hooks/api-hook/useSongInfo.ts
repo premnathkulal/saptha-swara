@@ -30,14 +30,14 @@ const useSongInfo = () => {
       function (c) {
         let r = Math.random() * 16;
         if (d > 0) {
-          r = (d + r) % 16 | 0;
+          r = ((d + r) % 16) | 0;
           d = Math.floor(d / 16);
         } else {
-          r = (d2 + r) % 16 | 0;
+          r = ((d2 + r) % 16) | 0;
           d2 = Math.floor(d2 / 16);
         }
         return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
-      }
+      },
     );
   };
 
@@ -87,7 +87,11 @@ const useSongInfo = () => {
 
   const toggleFavorite = async (id: string, isFavorite: boolean) => {
     if (!offlineCache.isOnline()) {
-      await offlineCache.enqueueWrite({ type: "toggle-favorite", id, isFavorite: !isFavorite });
+      await offlineCache.enqueueWrite({
+        type: "toggle-favorite",
+        id,
+        isFavorite: !isFavorite,
+      });
       const cached = (await offlineCache.getCachedSongs()) || [];
       const song = cached.find((s) => s.id === id);
       if (song) song.isFavorite = !isFavorite;
@@ -95,7 +99,9 @@ const useSongInfo = () => {
       dispatch(setSongInfo(cached));
       return;
     }
-    await update(ref(db, `saptha-swara/songs/${id}`), { isFavorite: !isFavorite });
+    await update(ref(db, `saptha-swara/songs/${id}`), {
+      isFavorite: !isFavorite,
+    });
   };
 
   const syncQueue = async () => {
@@ -114,7 +120,9 @@ const useSongInfo = () => {
             await remove(ref(db, `saptha-swara/songs/${op.id}`));
             break;
           case "toggle-favorite":
-            await update(ref(db, `saptha-swara/songs/${op.id}`), { isFavorite: op.isFavorite });
+            await update(ref(db, `saptha-swara/songs/${op.id}`), {
+              isFavorite: op.isFavorite,
+            });
             break;
         }
       } catch {
@@ -140,7 +148,7 @@ const useSongInfo = () => {
       if (data) {
         const list = Object.keys(data).reduce(
           (acc: SongInfo[], curr: string) => [...acc, { ...data[curr] }],
-          []
+          [],
         );
         list.sort((a, b) => a.name.localeCompare(b.name));
         await offlineCache.cacheSongs(list);

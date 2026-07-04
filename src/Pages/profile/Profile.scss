@@ -1,0 +1,277 @@
+@import "../../scss/_color.scss";
+
+.profile {
+  max-width: 640px;
+  margin: 0 auto;
+
+  .header-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: $bg-primary;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid $border;
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: $accent-light;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.4rem 0.5rem;
+      border-radius: $radius-sm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all $transition-fast;
+      flex-shrink: 0;
+
+      &:hover {
+        background: $accent-subtle;
+      }
+    }
+
+    .header-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $text-primary;
+      flex: 1;
+    }
+
+    .header-points {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: $accent-subtle;
+      color: $accent-light;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+
+      svg {
+        font-size: 0.78rem;
+      }
+    }
+  }
+
+  .content {
+    padding: 1.2rem 1rem 2rem;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: $bg-card;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+
+    .user-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $accent 0%, $accent-light 100%);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+
+      .name-display {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        .user-name {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: $text-primary;
+        }
+      }
+
+      .name-edit {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        .name-input {
+          flex: 1;
+          background: $bg-secondary;
+          border: 1px solid $border-accent;
+          color: $text-primary;
+          font-size: 1rem;
+          font-weight: 600;
+          padding: 0.4rem 0.6rem;
+          border-radius: $radius-sm;
+          outline: none;
+          min-width: 0;
+
+          &::placeholder {
+            color: $text-muted;
+          }
+        }
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        color: $text-muted;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 0.3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all $transition-fast;
+
+        &:hover {
+          color: $accent-light;
+          background: $accent-subtle;
+        }
+      }
+
+      .user-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: $accent-light;
+        background: $accent-subtle;
+        padding: 0.15rem 0.6rem;
+        border-radius: 100px;
+        margin-top: 0.2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+
+    .stat-card {
+      background: $bg-card;
+      border: 1px solid $border;
+      border-radius: $radius-md;
+      padding: 0.9rem 0.5rem;
+      text-align: center;
+
+      .stat-icon {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+        color: $accent-light;
+
+        &.fav {
+          color: $favorite;
+        }
+
+        &.raga {
+          color: #fbbf24;
+        }
+      }
+
+      .stat-value {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: $text-primary;
+        line-height: 1.2;
+      }
+
+      .stat-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-top: 0.15rem;
+      }
+    }
+  }
+
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
+  }
+
+  .contrib-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+
+    .contrib-item {
+      background: $bg-card;
+      border: 1px solid $border;
+      border-radius: $radius-md;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      .ci-icon {
+        font-size: 1rem;
+        color: $accent-light;
+        width: 1.4rem;
+        flex-shrink: 0;
+      }
+
+      .ci-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+
+        .ci-title {
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: $text-primary;
+        }
+
+        .ci-desc {
+          font-size: 0.75rem;
+          color: $text-muted;
+          margin-top: 0.05rem;
+        }
+      }
+
+      .ci-count {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $text-secondary;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

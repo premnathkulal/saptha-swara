@@ -27,6 +27,31 @@
       gap: 0.35rem;
     }
 
+    .profile-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $accent 0%, $accent-light 100%);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all $transition-fast;
+      user-select: none;
+
+      &:hover {
+        transform: scale(1.08);
+        box-shadow: $shadow-glow;
+      }
+
+      &:active {
+        transform: scale(0.92);
+      }
+    }
+
     .theme-btn {
       background: none;
       border: none;
