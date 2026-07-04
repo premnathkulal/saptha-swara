@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { SongInfo } from "../hooks/api-hook/useSongInfo";
-import appSlice from "./slices/app-slice";
+import appSlice, { VideoPlayerState } from "./slices/app-slice";
 import searchSlice from "./slices/search-slice";
 import songInfoSlice from "./slices/song-info-slice";
 
@@ -12,6 +12,7 @@ export interface MyStore {
     toastMessage: string;
     editInfo: SongInfo;
     showSearchFilter: boolean;
+    videoPlayer: VideoPlayerState;
   };
   search: {
     searchKey: string;

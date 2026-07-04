@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface VideoPlayerState {
+  videoId: string | null;
+  title: string;
+  raga: string;
+  tala: string;
+  type: string;
+}
+
 const appSlice = createSlice({
   name: "app",
   initialState: {
@@ -9,6 +17,7 @@ const appSlice = createSlice({
     toastMessage: "",
     editInfo: null,
     showSearchFilter: false,
+    videoPlayer: { videoId: null, title: "", raga: "", tala: "", type: "" } as VideoPlayerState,
   },
   reducers: {
     closeAddEditOption(state) {
@@ -40,6 +49,14 @@ const appSlice = createSlice({
     hideSearchFilter(state) {
       state.showSearchFilter = false;
     },
+    openVideoPlayer(state, action) {
+      document.body.style.overflow = "hidden";
+      state.videoPlayer = action.payload;
+    },
+    closeVideoPlayer(state) {
+      document.body.style.overflow = "";
+      state.videoPlayer = { videoId: null, title: "", raga: "", tala: "", type: "" };
+    },
   },
 });
 
@@ -51,5 +68,7 @@ export const {
   hideToastMessage,
   setShowSearchFilter,
   hideSearchFilter,
+  openVideoPlayer,
+  closeVideoPlayer,
 } = appSlice.actions;
 export default appSlice.reducer;
