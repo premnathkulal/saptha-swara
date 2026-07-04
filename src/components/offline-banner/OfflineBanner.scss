@@ -1,0 +1,22 @@
+@import "../../scss/_color.scss";
+
+.offline-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.08));
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: $radius-sm;
+  color: $delete;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  animation: fadeSlideUp 0.3s ease;
+
+  svg {
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+}

@@ -6,6 +6,13 @@
   box-sizing: border-box;
 }
 
+html.theming,
+html.theming *,
+html.theming *::before,
+html.theming *::after {
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
 html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
@@ -14,8 +21,8 @@ html {
 
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #0a0a0f;
-  color: #f0f0f5;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -32,8 +39,8 @@ a {
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.12);
-  color: #f0f0f5;
+  background: var(--accent-subtle);
+  color: var(--text-primary);
 }
 
 ::-webkit-scrollbar {
@@ -45,12 +52,85 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--border);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #606078;
+  background: var(--text-muted);
+}
+
+/* === Self-hosted Inter Variable Font === */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/inter/Inter-Variable.woff2") format("woff2");
+}
+
+/* === Theme: Dark (default) === */
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #1a1a2e;
+  --bg-card-hover: #20203a;
+  --bg-elevated: #16213e;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-glass: rgba(255, 255, 255, 0.05);
+
+  --text-primary: #f0f0f5;
+  --text-secondary: #9090a8;
+  --text-muted: #606078;
+
+  --accent: #7c3aed;
+  --accent-light: #a78bfa;
+  --accent-subtle: rgba(124, 58, 237, 0.12);
+  --accent-glow: rgba(124, 58, 237, 0.25);
+
+  --favorite: #ec4899;
+  --delete: #ef4444;
+  --success: #10b981;
+
+  --border: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(124, 58, 237, 0.3);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+}
+
+/* === Theme: Light === */
+.light-mode {
+  --bg-primary: #f5f3ff;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0eef8;
+  --bg-elevated: #eee8f8;
+  --bg-overlay: rgba(0, 0, 0, 0.25);
+  --bg-glass: rgba(124, 58, 237, 0.04);
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b6b80;
+  --text-muted: #9a9ab0;
+
+  --accent: #6d28d9;
+  --accent-light: #7c3aed;
+  --accent-subtle: rgba(109, 40, 217, 0.08);
+  --accent-glow: rgba(109, 40, 217, 0.12);
+
+  --favorite: #db2777;
+  --delete: #dc2626;
+  --success: #059669;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --border-accent: rgba(109, 40, 217, 0.2);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(109, 40, 217, 0.08);
 }
 
 @keyframes fadeSlideUp {

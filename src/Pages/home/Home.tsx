@@ -6,10 +6,12 @@ import { MyStore } from "../../store/store";
 import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useMemo, useState } from "react";
 import AddEditForm from "../../components/add-edit-form/AddEditForm";
+import OfflineBanner from "../../components/offline-banner/OfflineBanner";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
+import { addOnlineListener } from "../../utils/offlineCache";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 type SortField = "name" | "raga" | "tala" | "type";
 
@@ -25,15 +27,46 @@ const Home = () => {
   const showAddEditOption = useSelector(
     (store: MyStore) => store.app.isAddEditOptionEnabled,
   );
-  const { readSongDetails } = useSongInfo();
+  const { readSongDetails, syncQueue } = useSongInfo();
   const [sortBy, setSortBy] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     readSongDetails();
+    const unsub = addOnlineListener(() => {
+      syncQueue();
+      readSongDetails();
+    });
+    return unsub;
   }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") {
+      setIsDark(false);
+      document.documentElement.classList.add("light-mode");
+    } else if (saved === "dark") {
+      setIsDark(true);
+      document.documentElement.classList.remove("light-mode");
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDark(prefersDark);
+      if (!prefersDark) document.documentElement.classList.add("light-mode");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    const html = document.documentElement;
+    html.classList.add("theming");
+    setIsDark(next);
+    html.classList.toggle("light-mode", !next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+    requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove("theming")));
+  };
 
   const handleHalfSheet = () => {
     dispatch(openAddEditOption(false));
@@ -106,10 +139,16 @@ const Home = () => {
     <div className="home">
       <div className="header-bar">
         <h1 className="app-title">Saptha Swara</h1>
-        <button className="add-btn" onClick={handleHalfSheet}>
-          <FontAwesomeIcon icon={faPlusCircle} />
-        </button>
+        <div className="header-actions">
+          <button className="theme-btn" onClick={toggleTheme} aria-label="Toggle theme">
+            <FontAwesomeIcon icon={isDark ? faMoon : faSun} />
+          </button>
+          <button className="add-btn" onClick={handleHalfSheet}>
+            <FontAwesomeIcon icon={faPlusCircle} />
+          </button>
+        </div>
       </div>
+      <OfflineBanner />
       <SearchBar />
       <div className="song-controls-bar">
         <div className="sort-controls">

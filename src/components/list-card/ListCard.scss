@@ -113,6 +113,16 @@
           font-weight: 500;
         }
 
+        .raga-link {
+          cursor: pointer;
+          transition: color $transition-fast;
+
+          &:hover {
+            color: $accent-light;
+            text-decoration: underline;
+          }
+        }
+
         .song-tala {
           margin-left: auto;
           font-weight: 500;

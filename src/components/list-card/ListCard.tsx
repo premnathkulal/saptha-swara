@@ -8,6 +8,7 @@ import { openAddEditOption } from "../../store/slices/app-slice";
 import { faPen, faTrash, faEllipsisV, faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 const typeColors: Record<string, string> = {
   DIVOTIONAL: "#f59e0b",
@@ -35,6 +36,7 @@ const ListCard = (props: ListCardProps) => {
     isFavorite,
   } = props.songInfo;
   const { removeSongDetails, toggleFavorite } = useSongInfo();
+  const navigate = useNavigate();
 
   const handleRemove = () => {
     if (id) removeSongDetails(id);
@@ -94,7 +96,15 @@ const ListCard = (props: ListCardProps) => {
         </div>
         <div className="song-details">
           <div className="song-details-row">
-            <div className="song-ragas">{raga}</div>
+            <div
+              className="song-ragas raga-link"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/raga/${encodeURIComponent(raga)}`);
+              }}
+            >
+              {raga}
+            </div>
             {tala && <div className="song-tala">{tala}</div>}
           </div>
           <span
