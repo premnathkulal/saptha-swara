@@ -143,9 +143,9 @@ const Home = () => {
           <button className="theme-btn" onClick={toggleTheme} aria-label="Toggle theme">
             <FontAwesomeIcon icon={isDark ? faMoon : faSun} />
           </button>
-          <button className="add-btn" onClick={handleHalfSheet}>
+          {/* <button className="add-btn" onClick={handleHalfSheet}>
             <FontAwesomeIcon icon={faPlusCircle} />
-          </button>
+          </button> */}
         </div>
       </div>
       <OfflineBanner />

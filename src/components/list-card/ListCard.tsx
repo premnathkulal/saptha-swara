@@ -87,11 +87,11 @@ const ListCard = (props: ListCardProps) => {
               icon={isFavorite ? faHeartSolid : faHeartRegular}
               onClick={(e) => handleFavorite(e)}
             />
-            <div className="menu-container">
+            {/* <div className="menu-container">
               <button className="menu-trigger" onClick={handleMenuToggle}>
                 <FontAwesomeIcon icon={faEllipsisV} />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="song-details">
@@ -110,7 +110,7 @@ const ListCard = (props: ListCardProps) => {
           </div>
         </div>
       </div>
-      {props.isMenuOpen && (
+      {/* {props.isMenuOpen && (
         <>
           <div className="menu-backdrop" onClick={() => props.onToggleMenu()} />
           <div className="menu-dropdown">
@@ -122,7 +122,7 @@ const ListCard = (props: ListCardProps) => {
             </button>
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 };
