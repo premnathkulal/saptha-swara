@@ -18,7 +18,7 @@
     inset: 0;
     gap: 1px;
 
-    .white-key {
+      .white-key {
       flex: 1;
       background: $bg-card;
       border: 1px solid $border;
@@ -28,7 +28,11 @@
       justify-content: center;
       padding-bottom: 6px;
       transition: all 0.2s;
-      cursor: default;
+      cursor: pointer;
+
+      &:active {
+        transform: scaleY(0.97);
+      }
 
       .key-label {
         font-size: 0.65rem;
@@ -83,8 +87,12 @@
       padding-bottom: 5px;
       transition: all 0.2s;
       pointer-events: auto;
-      cursor: default;
+      cursor: pointer;
       z-index: 2;
+
+      &:active {
+        transform: scaleY(0.95);
+      }
 
       .key-label {
         font-size: 0.5rem;
@@ -112,6 +120,34 @@
 
       &:not(.active) {
         opacity: 0.3;
+      }
+    }
+  }
+
+  .keyboard-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.7rem;
+
+    .play-scale-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      border: 1px solid $accent;
+      background: $accent-subtle;
+      color: $accent-light;
+      cursor: pointer;
+      transition: all 0.15s;
+
+      &:hover:not(:disabled) {
+        background: rgba(139, 92, 246, 0.25);
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: default;
       }
     }
   }

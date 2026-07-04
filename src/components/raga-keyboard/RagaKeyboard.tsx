@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
+import * as Tone from "tone";
 import "./RagaKeyboard.scss";
 
 interface Props {
@@ -88,6 +89,35 @@ interface LegendItem {
   cls: string;
 }
 
+const NOTE_MAP: Record<string, string> = {
+  S: "C4",
+  "R\u2081": "C#4",
+  "R\u2082": "D4",
+  "R\u2083/G\u2082": "D#4",
+  "G\u2083": "E4",
+  "M\u2081": "F4",
+  "M\u2082": "F#4",
+  P: "G4",
+  "D\u2081": "G#4",
+  "D\u2082": "A4",
+  "D\u2083/N\u2082": "A#4",
+  "N\u2083": "B4",
+  "\u1E60": "C5",
+};
+
+function scaleToNotes(scale: string): string[] {
+  const tokens = scale.split(/\s+/);
+  const notes: string[] = [];
+  for (const token of tokens) {
+    const ids = noteToKeyIds(token);
+    for (const id of ids) {
+      const note = NOTE_MAP[id];
+      if (note && !notes.includes(note)) notes.push(note);
+    }
+  }
+  return notes;
+}
+
 const LEGEND: LegendItem[] = [
   { key: "all", label: "Both", cls: "both" },
   { key: "aro", label: "Aarohana", cls: "aro" },
@@ -96,8 +126,50 @@ const LEGEND: LegendItem[] = [
 
 const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
   const [filter, setFilter] = useState<Filter>("all");
+  const [playing, setPlaying] = useState(false);
+  const synthRef = useRef<Tone.Synth | null>(null);
   const aroNotes = parseScale(aarohana);
   const avaroNotes = parseScale(avarohana);
+
+  const startedRef = useRef(false);
+
+  const startAudio = useCallback(async () => {
+    if (startedRef.current) return;
+    await Tone.start();
+    synthRef.current = new Tone.Synth({
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.01, decay: 0.1, sustain: 0.3, release: 0.8 },
+    }).toDestination();
+    startedRef.current = true;
+  }, []);
+
+  const playNote = useCallback(
+    async (note: string) => {
+      await startAudio();
+      const synth = synthRef.current;
+      if (!synth) return;
+      synth.triggerAttackRelease(note, "8n");
+    },
+    [startAudio],
+  );
+
+  const playScale = useCallback(
+    async (scale: string) => {
+      await startAudio();
+      setPlaying(true);
+      const notes = scaleToNotes(scale);
+      const synth = synthRef.current;
+      if (!synth) return;
+
+      const now = Tone.now();
+      notes.forEach((note, i) => {
+        synth.triggerAttackRelease(note, "8n", now + i * 0.18);
+      });
+
+      setTimeout(() => setPlaying(false), notes.length * 180 + 200);
+    },
+    [startAudio],
+  );
 
   return (
     <div className="raga-keyboard">
@@ -107,6 +179,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
             <div
               key={key.id}
               className={`white-key${getKeyClass(key.id, aroNotes, avaroNotes, filter)}`}
+              onClick={() => playNote(NOTE_MAP[key.id])}
             >
               <span className="key-label">{key.label}</span>
             </div>
@@ -119,11 +192,29 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
               key={key.id}
               className={`black-key${getKeyClass(key.id, aroNotes, avaroNotes, filter)}`}
               style={{ left: `${key.position * 44 + 30}px` }}
+              onClick={() => playNote(NOTE_MAP[key.id])}
             >
               <span className="key-label">{key.label}</span>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="keyboard-actions">
+        <button
+          className="play-scale-btn"
+          disabled={playing}
+          onClick={() => playScale(aarohana)}
+        >
+          Play Aarohana
+        </button>
+        <button
+          className="play-scale-btn"
+          disabled={playing}
+          onClick={() => playScale(avarohana)}
+        >
+          Play Avarohana
+        </button>
       </div>
 
       <div className="keyboard-legend">
