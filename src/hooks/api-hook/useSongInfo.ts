@@ -1,4 +1,4 @@
-import { onValue, ref, remove, set } from "firebase/database";
+import { onValue, ref, remove, set, update } from "firebase/database";
 import { db } from "../../firebase";
 import { useDispatch } from "react-redux";
 import { showToastMessage } from "../../store/slices/app-slice";
@@ -11,6 +11,7 @@ export interface SongInfo {
   raga: string;
   tala: string;
   refLink: string;
+  isFavorite?: boolean;
 }
 
 const useSongInfo = () => {
@@ -56,6 +57,10 @@ const useSongInfo = () => {
     dispatch(showToastMessage("Song info removed!"));
   };
 
+  const toggleFavorite = (id: string, isFavorite: boolean) => {
+    update(ref(db, `saptha-swara/songs/${id}`), { isFavorite: !isFavorite });
+  };
+
   const readSongDetails = async () => {
     const starCountRef = await ref(db, `saptha-swara/songs`);
     await onValue(starCountRef, (snapshot) => {
@@ -80,6 +85,7 @@ const useSongInfo = () => {
     readSongDetails,
     updateSongDetails,
     removeSongDetails,
+    toggleFavorite,
   };
 };
 

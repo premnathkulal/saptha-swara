@@ -1,3 +1,5 @@
+@import "../../scss/_color.scss";
+
 .home {
   padding: 0.8rem;
 
@@ -8,5 +10,51 @@
     min-height: calc(100vh - 18rem);
     font-weight: bold;
     font-size: 1.8rem;
+  }
+
+  .song-controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .sort-controls {
+      display: flex;
+      gap: 0.3rem;
+
+      .sort-btn {
+        background: transparent;
+        border: 1px solid $border-color;
+        color: $white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 0.3rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        font-weight: 600;
+
+        &.active {
+          background: $border-color;
+          color: #fff;
+        }
+      }
+    }
+
+    .favorites-toggle {
+      background: transparent;
+      border: 1px solid #ff6b9d;
+      color: #ff6b9d;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.3rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+
+      &.active {
+        background: #ff6b9d;
+        color: #fff;
+      }
+    }
   }
 }

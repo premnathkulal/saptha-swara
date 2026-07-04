@@ -1,0 +1,342 @@
+{
+  "saptha-swara": {
+    "songs": {
+      "13a2d197-9c41-46b1-b74f-323bdfc631e2": {
+        "id": "13a2d197-9c41-46b1-b74f-323bdfc631e2",
+        "name": "Nee Namma Geluvagi Baa",
+        "raga": "Hamsadwani",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "1f8440df-0b4b-430e-96c7-0ccca3956500": {
+        "id": "1f8440df-0b4b-430e-96c7-0ccca3956500",
+        "name": "Hari Mana Jai Jai Gopala Mana",
+        "raga": "Brindavana Saranga",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "2132a5df-5eaa-416c-a38c-823b2a6e41bc": {
+        "id": "2132a5df-5eaa-416c-a38c-823b2a6e41bc",
+        "name": "Bare Sakhi Poguva Rasa Kreede Aaduva",
+        "raga": "Brindavana Saranga",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "2b4e1eb5-f22f-4e64-aa01-39247a104a1a": {
+        "id": "2b4e1eb5-f22f-4e64-aa01-39247a104a1a",
+        "name": "Rama Namavemba Namava Nenedare",
+        "raga": "Sankarabaranam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "3264ccff-fc9d-4606-afa0-a3845e3c4bf4": {
+        "id": "3264ccff-fc9d-4606-afa0-a3845e3c4bf4",
+        "name": "Nammama Sharade",
+        "raga": "Hamsadwani",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "32f31b2f-93c4-4a4b-b488-fa471f69e74d": {
+        "id": "32f31b2f-93c4-4a4b-b488-fa471f69e74d",
+        "name": "Kanada Raja Pandaricha",
+        "raga": "Hindolam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "564d0bf7-ae4d-4f8e-bce0-12858473275f": {
+        "id": "564d0bf7-ae4d-4f8e-bce0-12858473275f",
+        "name": "Shivanu Bhikshakke banda",
+        "raga": "MadhyaMavathi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "5ddfd160-30da-41b2-b8e2-72e06e7fd12d": {
+        "id": "5ddfd160-30da-41b2-b8e2-72e06e7fd12d",
+        "name": "Om Namah Shivay Har Har Bhole",
+        "raga": "Hindolam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "5f95ae87-786e-457d-a8aa-5f4e8f10314e": {
+        "id": "5f95ae87-786e-457d-a8aa-5f4e8f10314e",
+        "name": "Venkataramanane Baro",
+        "raga": "Saveri",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "60c86457-cc45-4d26-96e5-2881aee073cd": {
+        "id": "60c86457-cc45-4d26-96e5-2881aee073cd",
+        "name": "Danava Kadaliya Kanana",
+        "raga": "Siva Ranjani",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "622ad7af-7006-4744-92b3-b27bc24dbc5a": {
+        "id": "622ad7af-7006-4744-92b3-b27bc24dbc5a",
+        "name": "Pallikattu Shabarimalaiku",
+        "raga": "Abheri",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "70702410-23cd-475c-8e21-9927433c425b": {
+        "id": "70702410-23cd-475c-8e21-9927433c425b",
+        "name": "Gopi Kel Ninna Maga ( Mudadi Mukunda )",
+        "raga": "Sudda Saveri (Karnataka)",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "8aad84d9-b164-4ba1-bbf4-2179d51174aa": {
+        "id": "8aad84d9-b164-4ba1-bbf4-2179d51174aa",
+        "name": "Muraliya Nadava Keli",
+        "raga": "Abheri",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "8cd8bfad-bd28-4b94-80a7-075841281102": {
+        "id": "8cd8bfad-bd28-4b94-80a7-075841281102",
+        "name": "Needu Shiva Needadiru Shiva",
+        "raga": "Brindavana Saranga",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "92cbf65f-69fe-41de-aaa6-d62cad1f2e75": {
+        "id": "92cbf65f-69fe-41de-aaa6-d62cad1f2e75",
+        "name": "Bandal node bandal node",
+        "raga": "Brindavana Saranga",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "950f87f6-5c22-4efa-8d35-7f0195ca14d0": {
+        "id": "950f87f6-5c22-4efa-8d35-7f0195ca14d0",
+        "name": "Hakkiya Hegaleru Bandavage",
+        "raga": "Mohanam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "a725ff63-ef97-4440-a713-e74364a4618d": {
+        "id": "a725ff63-ef97-4440-a713-e74364a4618d",
+        "name": "Venkatachalam Nilayam",
+        "raga": "Sindhu Bhairavi",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "ba8a7e92-8af7-417b-8406-e163ead2cd98": {
+        "id": "ba8a7e92-8af7-417b-8406-e163ead2cd98",
+        "name": "Namo Brahmari Parashive Janani",
+        "raga": "MadhyaMavathi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "c41104ac-aeef-4f1d-935c-492457c7e3a4": {
+        "id": "c41104ac-aeef-4f1d-935c-492457c7e3a4",
+        "name": "Yogi Manege Banda",
+        "raga": "Mohanam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "c63c7187-13db-484e-b87f-b90e8b2d81e1": {
+        "id": "c63c7187-13db-484e-b87f-b90e8b2d81e1",
+        "name": "Odi Odi Bandu Hanege",
+        "raga": "Karna Ranjani",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "d03edac6-0a94-40ee-82fa-0f6a0dac1277": {
+        "id": "d03edac6-0a94-40ee-82fa-0f6a0dac1277",
+        "name": "Hamsadwaniyu Kelade Ninage Sharade",
+        "raga": "Hamsadwani",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "d17fb1bc-706d-4b84-bfdc-4a78968ef825": {
+        "id": "d17fb1bc-706d-4b84-bfdc-4a78968ef825",
+        "name": "Satata Margadi Santata Seviparanu",
+        "raga": "Brindavana Saranga",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "d6dd3d92-4f99-4809-b61f-b53fdc89b349": {
+        "id": "d6dd3d92-4f99-4809-b61f-b53fdc89b349",
+        "name": "Bhagyada Lakshmi Baramma",
+        "raga": "MadhyaMavathi",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "e7b8ec7e-a770-43a9-a6cd-20b9c0912832": {
+        "id": "e7b8ec7e-a770-43a9-a6cd-20b9c0912832",
+        "name": "Chandrachooda Shiva Shankara Parvathi",
+        "raga": "Dharbari Kanada",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "f84d9d67-6299-4f4f-829d-ab528978aca2": {
+        "id": "f84d9d67-6299-4f4f-829d-ab528978aca2",
+        "name": "Tamburi Meetidava",
+        "raga": "Sindhu Bhairavi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "fdd02aae-ee2c-420d-9f53-c5ca785e6eaf": {
+        "id": "fdd02aae-ee2c-420d-9f53-c5ca785e6eaf",
+        "name": "Yadava Nee Baa Yadukula Nanadana",
+        "raga": "Abheri",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "fec5fae8-71a2-42b4-8ae4-fbf3aa446a65": {
+        "id": "fec5fae8-71a2-42b4-8ae4-fbf3aa446a65",
+        "name": "Nanda Gopal Nandana Nada Lola",
+        "raga": "Mohanam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3b": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3b",
+        "name": "Narayana Ninna Namada",
+        "raga": "Hindolam",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3c": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3c",
+        "name": "Shankara Nada Shareera Para",
+        "raga": "Madhyamavathi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3d": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3d",
+        "name": "Mamavathu Shri Saraswathi",
+        "raga": "Hindolam",
+        "refLink": "",
+        "tala": "Adi",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3e": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3e",
+        "name": "Sharanu Sharanu He Benakane",
+        "raga": "Jog",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3f": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3f",
+        "name": "Mathade Gowri Mathade",
+        "raga": "Durga",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b40": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b40",
+        "name": "Guruvina Mahimeya Mantrakshate",
+        "raga": "Revathi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b41": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b41",
+        "name": "Sharade Daye Toride",
+        "raga": "Malaya Marutham",
+        "refLink": "",
+        "tala": "Ekataala",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b42": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b42",
+        "name": "Deepada Bolpude Undayar",
+        "raga": "Shudha Dhanyasi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b44": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b44",
+        "name": "Bolli Bolpu Moodunduye",
+        "raga": "Vasanthi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b45": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b45",
+        "name": "Jagadmabha Devi Bhavani",
+        "raga": "Vasanthi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b46": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b46",
+        "name": "Ava Kulavo Ranga",
+        "raga": "Charukeshi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b47": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b47",
+        "name": "Danava Kadaliya Kanana",
+        "raga": "Shivaranjini",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b48": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b48",
+        "name": "Bho Shambho Shiva Shambho Swayambho",
+        "raga": "Revathi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b49": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b49",
+        "name": "Vaara Bantamma",
+        "raga": "Madhyamavathi",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      },
+      "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b4a": {
+        "id": "ff1b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b4a",
+        "name": "Gajamukhane Ganapathiye",
+        "raga": "Mishra Kalyani",
+        "refLink": "",
+        "tala": "",
+        "type": "Divotional"
+      }
+    }
+  }
+}
