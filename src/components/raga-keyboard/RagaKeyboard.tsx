@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import * as Tone from "tone";
 import "./RagaKeyboard.scss";
 
@@ -10,6 +10,7 @@ interface Props {
 type KeyId = string;
 
 type Filter = "all" | "aro" | "avaro";
+type SynthType = "harmonium" | "piano";
 
 const WHITE_KEYS: { id: KeyId; label: string }[] = [
   "S",
@@ -133,9 +134,26 @@ const LEGEND: LegendItem[] = [
   { key: "avaro", label: "Avarohana", cls: "avaro" },
 ];
 
+function createSynth(type: SynthType) {
+  if (type === "harmonium") {
+    return new Tone.Synth({
+      oscillator: { type: "sawtooth" },
+      envelope: { attack: 0.08, decay: 0.15, sustain: 0.4, release: 0.6 },
+    }).chain(
+      new Tone.Chorus(0.5, 2.5, 0.5).start(),
+      Tone.Destination,
+    );
+  }
+  return new Tone.Synth({
+    oscillator: { type: "triangle" },
+    envelope: { attack: 0.005, decay: 0.3, sustain: 0.1, release: 0.7 },
+  }).toDestination();
+}
+
 const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
   const [filter, setFilter] = useState<Filter>("all");
   const [saIndex, setSaIndex] = useState(0);
+  const [synthType, setSynthType] = useState<SynthType>("harmonium");
   const [playing, setPlaying] = useState(false);
   const [activeNote, setActiveNote] = useState<string | null>(null);
   const [pressedKey, setPressedKey] = useState<string | null>(null);
@@ -147,31 +165,38 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
 
   const startedRef = useRef(false);
 
-  const startAudio = useCallback(async () => {
-    if (startedRef.current) return;
-    await Tone.start();
-    synthRef.current = new Tone.Synth({
-      oscillator: { type: "triangle" },
-      envelope: { attack: 0.01, decay: 0.1, sustain: 0.3, release: 0.8 },
-    }).toDestination();
-    startedRef.current = true;
+  const startAudio = useCallback(async (type: SynthType) => {
+    if (startedRef.current) {
+      synthRef.current?.dispose();
+    } else {
+      await Tone.start();
+      startedRef.current = true;
+    }
+    synthRef.current = createSynth(type);
   }, []);
+
+  useEffect(() => {
+    if (startedRef.current) {
+      synthRef.current?.dispose();
+      synthRef.current = createSynth(synthType);
+    }
+  }, [synthType]);
 
   const playNote = useCallback(
     async (note: string) => {
-      await startAudio();
+      await startAudio(synthType);
       const synth = synthRef.current;
       if (!synth) return;
       setPressedKey(note);
       synth.triggerAttackRelease(note, "8n");
       setTimeout(() => setPressedKey(null), 200);
     },
-    [startAudio],
+    [startAudio, synthType],
   );
 
   const playScale = useCallback(
     async (scale: string) => {
-      await startAudio();
+      await startAudio(synthType);
       setPlaying(true);
       setActiveNote(null);
       const notes = scaleToNotes(scale, noteMap);
@@ -196,7 +221,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
       playNext();
       timerRef.current = setInterval(playNext, 280);
     },
-    [startAudio, noteMap],
+    [startAudio, noteMap, synthType],
   );
 
   return (
@@ -214,6 +239,21 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="synth-toggle">
+        <button
+          className={`synth-btn${synthType === "harmonium" ? " active" : ""}`}
+          onClick={() => setSynthType("harmonium")}
+        >
+          Harmonium
+        </button>
+        <button
+          className={`synth-btn${synthType === "piano" ? " active" : ""}`}
+          onClick={() => setSynthType("piano")}
+        >
+          Piano
+        </button>
       </div>
 
       <div className="keyboard-keys">
