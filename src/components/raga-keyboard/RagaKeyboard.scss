@@ -1,0 +1,174 @@
+@import "../../scss/_color.scss";
+
+.raga-keyboard {
+  margin-bottom: 0.8rem;
+
+  .keyboard-keys {
+    position: relative;
+    height: 130px;
+    width: 100%;
+    max-width: 352px;
+    margin: 0 auto;
+    user-select: none;
+  }
+
+  .white-keys {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    gap: 1px;
+
+    .white-key {
+      flex: 1;
+      background: $bg-card;
+      border: 1px solid $border;
+      border-radius: 0 0 5px 5px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 6px;
+      transition: all 0.2s;
+      cursor: default;
+
+      .key-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: $text-muted;
+        letter-spacing: 0.02em;
+        transition: color 0.2s;
+      }
+
+      &.active {
+        &.aro {
+          background: rgba(139, 92, 246, 0.15);
+          border-color: rgba(139, 92, 246, 0.4);
+          .key-label { color: #a78bfa; }
+        }
+        &.avaro {
+          background: rgba(59, 130, 246, 0.15);
+          border-color: rgba(59, 130, 246, 0.4);
+          .key-label { color: #60a5fa; }
+        }
+        &.both {
+          background: linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.12));
+          border-color: rgba(139, 92, 246, 0.5);
+          .key-label {
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+        }
+      }
+    }
+  }
+
+  .black-keys {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 78px;
+    pointer-events: none;
+
+    .black-key {
+      position: absolute;
+      width: 28px;
+      height: 78px;
+      background: $text-primary;
+      border-radius: 0 0 4px 4px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 5px;
+      transition: all 0.2s;
+      pointer-events: auto;
+      cursor: default;
+      z-index: 2;
+
+      .key-label {
+        font-size: 0.5rem;
+        font-weight: 700;
+        color: $bg-primary;
+        letter-spacing: 0.01em;
+        writing-mode: vertical-lr;
+        text-orientation: mixed;
+      }
+
+      &.active {
+        &.aro {
+          background: #7c3aed;
+          .key-label { color: #ddd6fe; }
+        }
+        &.avaro {
+          background: #2563eb;
+          .key-label { color: #dbeafe; }
+        }
+        &.both {
+          background: linear-gradient(180deg, #7c3aed 0%, #2563eb 100%);
+          .key-label { color: #e0e7ff; }
+        }
+      }
+
+      &:not(.active) {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .keyboard-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    .legend-btn {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: $text-secondary;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 100px;
+      border: 1px solid $border;
+      background: $bg-card;
+      cursor: pointer;
+      transition: all 0.15s;
+
+      &:hover {
+        background: $bg-card-hover;
+      }
+
+      &.active {
+        border-color: $accent;
+        color: $accent-light;
+        background: $accent-subtle;
+      }
+
+      .legend-swatch {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        background: $bg-card;
+        border: 1px solid $border;
+        flex-shrink: 0;
+
+        &.aro {
+          background: rgba(139, 92, 246, 0.4);
+          border-color: rgba(139, 92, 246, 0.5);
+        }
+        &.avaro {
+          background: rgba(59, 130, 246, 0.4);
+          border-color: rgba(59, 130, 246, 0.5);
+        }
+        &.both {
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(59, 130, 246, 0.4));
+          border-color: rgba(139, 92, 246, 0.5);
+        }
+      }
+    }
+  }
+}

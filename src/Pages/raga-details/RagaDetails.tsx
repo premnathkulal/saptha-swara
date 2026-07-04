@@ -6,6 +6,7 @@ import { faChevronLeft, faMusic } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { getRagaInfo, getDummySongs } from "../../data/ragas";
 import { useSongInfo } from "../../hooks/api-hook/useSongInfo";
+import RagaKeyboard from "../../components/raga-keyboard/RagaKeyboard";
 import "./RagaDetails.scss";
 
 const RagaDetails = () => {
@@ -96,16 +97,7 @@ const RagaDetails = () => {
         </div>
 
         {info ? (
-          <>
-            <div className="scale-card">
-              <div className="scale-label">Aarohana (Ascending)</div>
-              <div className="scale-notes">{info.aarohana}</div>
-            </div>
-            <div className="scale-card">
-              <div className="scale-label">Avarohana (Descending)</div>
-              <div className="scale-notes">{info.avarohana}</div>
-            </div>
-          </>
+          <RagaKeyboard aarohana={info.aarohana} avarohana={info.avarohana} />
         ) : (
           <div className="scale-card unknown">
             <div className="scale-label">Scale Information</div>
