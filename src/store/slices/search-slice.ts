@@ -8,7 +8,7 @@ const searchSlice = createSlice({
   },
   reducers: {
     setSearchKey(state, action) {
-      state.searchKey = action.payload.toUpperCase();
+      state.searchKey = action.payload;
     },
     setFilterKey(state, action) {
       const filterOption = action.payload.toUpperCase();

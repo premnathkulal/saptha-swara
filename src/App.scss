@@ -1,11 +1,21 @@
 @import "./scss/_color.scss";
 
 .app {
-  background: $black;
-  color: $white;
+  background: $bg-primary;
+  color: $text-primary;
   min-height: 100vh;
-}
+  position: relative;
 
-body {
-  // overflow: hidden;
+  &::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 80% 60% at 50% -20%,
+      rgba(124, 58, 237, 0.08) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
 }

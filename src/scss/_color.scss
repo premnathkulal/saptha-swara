@@ -1,10 +1,47 @@
-$black: #1a1a1a;
-$white: #f5f5f5;
-$text-light: #d3d3d3;
-$card-bg-color: rgb(45, 45, 45);
-$card-gradient: linear-gradient(
-  90deg,
-  rgba(150, 50, 100, 1) 0%,
-  rgba(45, 20, 60, 1) 92%
-);
-$border-color: rgb(120, 10, 70);
+// === Color System ===
+
+// Surfaces
+$bg-primary: #0a0a0f;
+$bg-secondary: #12121a;
+$bg-card: #1a1a2e;
+$bg-card-hover: #20203a;
+$bg-elevated: #16213e;
+$bg-overlay: rgba(0, 0, 0, 0.7);
+$bg-glass: rgba(255, 255, 255, 0.05);
+
+// Text
+$text-primary: #f0f0f5;
+$text-secondary: #9090a8;
+$text-muted: #606078;
+
+// Accent
+$accent: #7c3aed;
+$accent-light: #a78bfa;
+$accent-subtle: rgba(124, 58, 237, 0.12);
+$accent-glow: rgba(124, 58, 237, 0.25);
+
+// Status
+$favorite: #ec4899;
+$delete: #ef4444;
+$success: #10b981;
+
+// Borders
+$border: rgba(255, 255, 255, 0.06);
+$border-accent: rgba(124, 58, 237, 0.3);
+
+// Layout
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+$shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-normal: 0.25s ease;
+$transition-slow: 0.4s ease;

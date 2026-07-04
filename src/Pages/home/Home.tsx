@@ -1,22 +1,20 @@
 import "./Home.scss";
-// AUTH GATE: uncomment FloatingButton when Phase 4.2 auth is done
-// import FloatingButton from "../../components/floating-button/FloatingButton";
 import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
-// AUTH GATE: uncomment when Phase 4.2 auth is done
-// import { openAddEditOption } from "../../store/slices/app-slice";
+import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useMemo, useState } from "react";
-// AUTH GATE: uncomment AddEditForm when Phase 4.2 auth is done  
-// import AddEditForm from "../../components/add-edit-form/AddEditForm";
+import AddEditForm from "../../components/add-edit-form/AddEditForm";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 type SortField = "name" | "raga" | "tala" | "type";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const songInformation = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
   );
@@ -24,23 +22,22 @@ const Home = () => {
   const filterOptions = useSelector(
     (store: MyStore) => store.search.filterOptions,
   );
-  // AUTH GATE: uncomment when Phase 4.2 auth is done
-  // const showAddEditOption = useSelector(
-  //   (store: MyStore) => store.app.isAddEditOptionEnabled,
-  // );
+  const showAddEditOption = useSelector(
+    (store: MyStore) => store.app.isAddEditOptionEnabled,
+  );
   const { readSongDetails } = useSongInfo();
   const [sortBy, setSortBy] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
 
   useEffect(() => {
     readSongDetails();
   }, []);
 
-  // AUTH GATE: uncomment when Phase 4.2 auth is done
-  // const handleHalfSheet = () => {
-  //   dispatch(openAddEditOption(false));
-  // };
+  const handleHalfSheet = () => {
+    dispatch(openAddEditOption(false));
+  };
 
   const handleSortChange = (field: SortField) => {
     if (sortBy === field) {
@@ -74,12 +71,13 @@ const Home = () => {
     }
 
     if (searchKey) {
+      const key = searchKey.toUpperCase();
       list = list.filter(
         (song) =>
-          song.name.toUpperCase().includes(searchKey) ||
-          song.raga.toUpperCase().includes(searchKey) ||
-          (song.tala || "").toUpperCase().includes(searchKey) ||
-          song.type.toUpperCase().includes(searchKey),
+          song.name.toUpperCase().includes(key) ||
+          song.raga.toUpperCase().includes(key) ||
+          (song.tala || "").toUpperCase().includes(key) ||
+          song.type.toUpperCase().includes(key),
       );
     }
 
@@ -106,6 +104,12 @@ const Home = () => {
 
   return (
     <div className="home">
+      <div className="header-bar">
+        <h1 className="app-title">Saptha Swara</h1>
+        <button className="add-btn" onClick={handleHalfSheet}>
+          <FontAwesomeIcon icon={faPlusCircle} />
+        </button>
+      </div>
       <SearchBar />
       <div className="song-controls-bar">
         <div className="sort-controls">
@@ -131,12 +135,20 @@ const Home = () => {
         <div className="no-item">Sorry... No Song Found!</div>
       ) : (
         songsList.map((songInfo, index) => (
-          <ListCard songInfo={songInfo} key={songInfo.id || index} />
+          <ListCard
+            songInfo={songInfo}
+            key={songInfo.id || index}
+            index={index}
+            isMenuOpen={activeMenuId === songInfo.id}
+            onToggleMenu={() =>
+              setActiveMenuId((prev) =>
+                prev === songInfo.id ? null : songInfo.id ?? null,
+              )
+            }
+          />
         ))
       )}
-      {/* AUTH GATE: uncomment when Phase 4.2 auth is done */}
-      {/* {showAddEditOption && <AddEditForm />} */}
-      {/* <FloatingButton openHalfSheet={handleHalfSheet} /> */}
+      {showAddEditOption && <AddEditForm />}
     </div>
   );
 };

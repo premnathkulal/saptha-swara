@@ -3672,7 +3672,7 @@ const FilterSelection = (props: FilterSelection) => {
             <FontAwesomeIcon icon={faTimes} />
           </div>
         </div>
-        <div className="list-contaner">
+        <div className="list-container">
           {itemsList.map((item: string, index) => (
             <div
               className="list"

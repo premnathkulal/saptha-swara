@@ -1,40 +1,90 @@
 @import "../../scss/_color.scss";
 
 .add-edit-form {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .form-header {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $text-primary;
+    text-align: center;
+    padding: 0.5rem 0 0.5rem;
+  }
+
   .text-input {
     width: 100%;
     display: flex;
-    padding: 2rem;
+    padding: 0.5rem 0 1rem;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-bottom: 2rem;
+    gap: 0.6rem;
+    flex: 1;
 
-    input {
+    .input-group {
       width: 100%;
-      height: 2rem;
-      color: $border-color;
-      background: hsl(323, 100%, 87%);
-      font-weight: 800;
-      font-size: 1rem;
-      outline: none;
-      padding: 0.3rem;
-      margin: 1.1rem 0;
-      margin-top: 0;
-      border: 2px solid $border-color;
-      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: $bg-card;
+      border: 1.5px solid $border;
+      border-radius: $radius-md;
+      padding: 0 0.8rem;
+      transition: all $transition-fast;
+
+      &:focus-within {
+        border-color: $accent;
+        box-shadow: 0 0 0 3px $accent-subtle;
+      }
+
+      .input-icon {
+        color: $text-muted;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+
+      input {
+        width: 100%;
+        height: 2.8rem;
+        color: $text-primary;
+        background: transparent;
+        font-weight: 500;
+        font-size: 0.95rem;
+        outline: none;
+        border: none;
+        padding: 0;
+
+        &::placeholder {
+          color: $text-muted;
+          font-weight: 400;
+        }
+      }
     }
   }
 
   .btn {
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    height: 3.5rem;
-    color: $white;
-    background: $card-bg-color;
-    font-weight: 800;
-    font-size: 1.2rem;
+    height: 3rem;
+    color: #fff;
+    background: linear-gradient(135deg, $accent 0%, $accent-light 100%);
+    font-weight: 600;
+    font-size: 1rem;
     border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+    box-shadow: 0 0 16px $accent-glow;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px $accent-glow;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 }

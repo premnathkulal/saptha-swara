@@ -6,6 +6,13 @@ import { useEffect, useState } from "react";
 
 const filterOptionsData = ["Divotional", "Movie", "Yakshagana", "Folk"];
 
+const chipColors: Record<string, string> = {
+  DEVOTIONAL: "#f59e0b",
+  MOVIE: "#3b82f6",
+  YAKSHAGANA: "#10b981",
+  FOLK: "#8b5cf6",
+};
+
 const FilterBar = () => {
     const dispatch = useDispatch();
     const filterOptions = useSelector(
@@ -23,17 +30,25 @@ const FilterBar = () => {
 
     return (
         <div className="filter-bar">
-            {filterOptionsData.map((option, index) => (
-                <span
-                    className={`filter-chip ${selectetOptions.includes(
-                        option.toUpperCase()
-                    ) ? "active" : ""}`}
-                    key={index}
-                    onClick={() => handleFilterChips(option)}
-                >
-                    {option}
-                </span>
-            ))}
+            {filterOptionsData.map((option, index) => {
+                const key = option.toUpperCase();
+                const isActive = selectetOptions.includes(key);
+                const color = chipColors[key];
+                return (
+                    <span
+                        className={`filter-chip ${isActive ? "active" : ""}`}
+                        key={index}
+                        onClick={() => handleFilterChips(option)}
+                        style={
+                            isActive
+                                ? { background: color, borderColor: color, color: "#fff" }
+                                : {}
+                        }
+                    >
+                        {option}
+                    </span>
+                );
+            })}
         </div>
     );
 };

@@ -9,6 +9,14 @@ import "./AddEditForm.scss";
 import HalfSheet from "../half-sheet/HalfSheet";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
 import FilterSelection, { DataItem } from "../filter-selection/FilterSelection";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMusic,
+  faTag,
+  faRuler,
+  faClock,
+  faLink,
+} from "@fortawesome/free-solid-svg-icons";
 
 const AddEditForm = () => {
   const initialSongInfo = {
@@ -87,66 +95,83 @@ const AddEditForm = () => {
       onClick={(event) => handleHalfSheet(event as MouseEvent)}
     >
       <HalfSheet>
+        <div className="form-header">
+          {editInfo ? "Edit Song" : "Add New Song"}
+        </div>
         <div className="text-input">
-          <input
-            id="name"
-            type="text"
-            placeholder="Song Name"
-            name="name"
-            value={songInfo.name}
-            onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              handleInputChange(e)
-            }
-          />
-          <input
-            id="type"
-            type="text"
-            placeholder="Song Type"
-            name="type"
-            value={songInfo.type}
-            onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              handleInputChange(e)
-            }
-            onClick={(e) => handleSearchFilter(e)}
-            readOnly
-          />
-          <input
-            id="raga"
-            type="text"
-            placeholder="Song Raga"
-            name="raga"
-            value={songInfo.raga}
-            onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              handleInputChange(e)
-            }
-            onFocus={(e) => handleSearchFilter(e)}
-            readOnly
-          />
-          <input
-            id="tala"
-            name="tala"
-            type="text"
-            placeholder="Select Tala"
-            value={songInfo.tala}
-            onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              handleInputChange(e)
-            }
-            onFocus={(e) => handleSearchFilter(e)}
-            readOnly
-          />
-
-          <input
-            type="text"
-            placeholder="Refference Link"
-            name="refLink"
-            value={songInfo.refLink}
-            onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              handleInputChange(e)
-            }
-          />
+          <div className="input-group">
+            <FontAwesomeIcon icon={faMusic} className="input-icon" />
+            <input
+              id="name"
+              type="text"
+              placeholder="Song Name"
+              name="name"
+              value={songInfo.name}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                handleInputChange(e)
+              }
+            />
+          </div>
+          <div className="input-group">
+            <FontAwesomeIcon icon={faTag} className="input-icon" />
+            <input
+              id="type"
+              type="text"
+              placeholder="Song Type"
+              name="type"
+              value={songInfo.type}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                handleInputChange(e)
+              }
+              onClick={(e) => handleSearchFilter(e)}
+              readOnly
+            />
+          </div>
+          <div className="input-group">
+            <FontAwesomeIcon icon={faRuler} className="input-icon" />
+            <input
+              id="raga"
+              type="text"
+              placeholder="Song Raga"
+              name="raga"
+              value={songInfo.raga}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                handleInputChange(e)
+              }
+              onFocus={(e) => handleSearchFilter(e)}
+              readOnly
+            />
+          </div>
+          <div className="input-group">
+            <FontAwesomeIcon icon={faClock} className="input-icon" />
+            <input
+              id="tala"
+              name="tala"
+              type="text"
+              placeholder="Select Tala"
+              value={songInfo.tala}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                handleInputChange(e)
+              }
+              onFocus={(e) => handleSearchFilter(e)}
+              readOnly
+            />
+          </div>
+          <div className="input-group">
+            <FontAwesomeIcon icon={faLink} className="input-icon" />
+            <input
+              type="text"
+              placeholder="Reference Link"
+              name="refLink"
+              value={songInfo.refLink}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                handleInputChange(e)
+              }
+            />
+          </div>
         </div>
         <button className="btn" onClick={handleSubmit}>
-          {!editInfo ? "Add" : "Edit"} To The List
+          {editInfo ? "Update" : "Add to List"}
         </button>
       </HalfSheet>
       {showSelectionItem && (
