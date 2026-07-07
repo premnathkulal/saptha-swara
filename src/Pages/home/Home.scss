@@ -1,7 +1,7 @@
 @import "../../scss/_color.scss";
 
 .home {
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 1rem 4rem;
   max-width: 640px;
   margin: 0 auto;
 
@@ -172,5 +172,9 @@
         box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
       }
     }
+  }
+
+  .scroll-sentinel {
+    height: 1px;
   }
 }

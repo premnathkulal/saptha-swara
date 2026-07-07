@@ -529,6 +529,27 @@
           transform: translateX(2px) scale(0.99);
         }
       }
+
+      .load-more-sublist {
+        display: block;
+        width: 100%;
+        background: $accent-subtle;
+        border: 1px solid $border-accent;
+        color: $accent-light;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.55rem;
+        border-radius: $radius-sm;
+        cursor: pointer;
+        transition: all $transition-fast;
+        margin-top: 0.15rem;
+
+        &:hover {
+          background: $accent;
+          color: #fff;
+          border-color: $accent;
+        }
+      }
     }
   }
 }

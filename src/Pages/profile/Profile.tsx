@@ -39,6 +39,8 @@ const Profile = () => {
   const [userName, setUserName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [addedPage, setAddedPage] = useState(1);
+  const [editedPage, setEditedPage] = useState(1);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -85,6 +87,10 @@ const Profile = () => {
     () => allSongs.filter((s) => s.editedBy === authUser?.uid),
     [allSongs, authUser],
   );
+
+  const PAGE_SIZE = 10;
+  const paginatedAdded = addedSongs.slice(0, addedPage * PAGE_SIZE);
+  const paginatedEdited = editedSongs.slice(0, editedPage * PAGE_SIZE);
 
   const totalSongs = addedSongs.length + editedSongs.length;
   const favoriteSongs = allSongs.filter((s) => s.isFavorite).length;
@@ -213,9 +219,11 @@ const Profile = () => {
         <div className="contrib-list">
           <div
             className="contrib-item clickable"
-            onClick={() =>
-              setExpandedSection(expandedSection === "added" ? null : "added")
-            }
+            onClick={() => {
+              setAddedPage(1);
+              setEditedPage(1);
+              setExpandedSection(expandedSection === "added" ? null : "added");
+            }}
           >
             <FontAwesomeIcon icon={faPlus} className="ci-icon" />
             <div className="ci-info">
@@ -232,7 +240,7 @@ const Profile = () => {
           </div>
           {expandedSection === "added" && addedSongs.length > 0 && (
             <div className="contrib-sublist">
-              {addedSongs.map((s) => (
+              {paginatedAdded.map((s) => (
                 <div key={s.id} className="sublist-item">
                   <div className="sublist-info">
                     <span className="sublist-name">{s.name}</span>
@@ -250,15 +258,25 @@ const Profile = () => {
                   </button>
                 </div>
               ))}
+              {addedPage * PAGE_SIZE < addedSongs.length && (
+                <button
+                  className="load-more-sublist"
+                  onClick={() => setAddedPage((p) => p + 1)}
+                >
+                  Load More ({addedSongs.length - addedPage * PAGE_SIZE} remaining)
+                </button>
+              )}
             </div>
           )}
 
           <div
             className={`contrib-item clickable ${!editedSongs.length ? "disabled" : ""}`}
-            onClick={() =>
-              editedSongs.length &&
-              setExpandedSection(expandedSection === "edited" ? null : "edited")
-            }
+            onClick={() => {
+              if (!editedSongs.length) return;
+              setAddedPage(1);
+              setEditedPage(1);
+              setExpandedSection(expandedSection === "edited" ? null : "edited");
+            }}
           >
             <FontAwesomeIcon icon={faEdit} className="ci-icon" />
             <div className="ci-info">
@@ -277,7 +295,7 @@ const Profile = () => {
           </div>
           {expandedSection === "edited" && editedSongs.length > 0 && (
             <div className="contrib-sublist">
-              {editedSongs.map((s) => (
+              {paginatedEdited.map((s) => (
                 <div key={s.id} className="sublist-item">
                   <div className="sublist-info">
                     <span className="sublist-name">{s.name}</span>
@@ -288,6 +306,14 @@ const Profile = () => {
                   </div>
                 </div>
               ))}
+              {editedPage * PAGE_SIZE < editedSongs.length && (
+                <button
+                  className="load-more-sublist"
+                  onClick={() => setEditedPage((p) => p + 1)}
+                >
+                  Load More ({editedSongs.length - editedPage * PAGE_SIZE} remaining)
+                </button>
+              )}
             </div>
           )}
         </div>

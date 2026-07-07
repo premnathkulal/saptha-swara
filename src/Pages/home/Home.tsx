@@ -3,7 +3,7 @@ import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
 import { useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AddEditForm from "../../components/add-edit-form/AddEditForm";
 import OfflineBanner from "../../components/offline-banner/OfflineBanner";
@@ -30,7 +30,9 @@ const Home = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [activeSongId, setActiveSongId] = useState<string | null>(null);
+  const [songPage, setSongPage] = useState(1);
   const [isDark, setIsDark] = useState(true);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = () => setActiveSongId(null);
@@ -130,6 +132,26 @@ const Home = () => {
     showFavoritesOnly,
   ]);
 
+  const PAGE_SIZE = 10;
+  const totalPages = Math.ceil(songsList.length / PAGE_SIZE);
+  const paginatedSongs = songsList.slice(0, songPage * PAGE_SIZE);
+
+  useEffect(() => {
+    setSongPage(1);
+  }, [searchKey, filterOptions, sortBy, sortOrder, showFavoritesOnly]);
+
+  useEffect(() => {
+    if (!sentinelRef.current || songPage >= totalPages) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setSongPage((p) => p + 1);
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(sentinelRef.current);
+    return () => observer.disconnect();
+  }, [songPage, totalPages]);
+
   return (
     <div className="home">
       <div className="header-bar">
@@ -178,19 +200,22 @@ const Home = () => {
       {!songsList.length ? (
         <div className="no-item">Sorry... No Song Found!</div>
       ) : (
-        songsList.map((songInfo, index) => (
-          <ListCard
-            songInfo={songInfo}
-            key={songInfo.id || index}
-            index={index}
-            isActive={activeSongId === songInfo.id}
-            onActivate={() =>
-              setActiveSongId((prev) =>
-                prev === songInfo.id ? null : (songInfo.id ?? null),
-              )
-            }
-          />
-        ))
+        <>
+          {paginatedSongs.map((songInfo, index) => (
+            <ListCard
+              songInfo={songInfo}
+              key={songInfo.id || index}
+              index={index}
+              isActive={activeSongId === songInfo.id}
+              onActivate={() =>
+                setActiveSongId((prev) =>
+                  prev === songInfo.id ? null : (songInfo.id ?? null),
+                )
+              }
+            />
+          ))}
+          {songPage < totalPages && <div ref={sentinelRef} className="scroll-sentinel" />}
+        </>
       )}
       {showAddEditOption && <AddEditForm />}
     </div>
