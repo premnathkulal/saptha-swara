@@ -63,6 +63,72 @@
     animation: fadeIn 0.3s ease;
   }
 
+  .auth-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    animation: fadeIn 0.4s ease;
+
+    .auth-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: $accent-subtle;
+      color: $accent-light;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .auth-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin: 0 0 0.4rem;
+    }
+
+    .auth-desc {
+      font-size: 0.85rem;
+      color: $text-muted;
+      margin: 0 0 1.5rem;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #fff;
+      color: #333;
+      border: none;
+      border-radius: 100px;
+      padding: 0.7rem 1.6rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all $transition-fast;
+      box-shadow: $shadow-md;
+
+      .google-icon {
+        font-size: 1.1rem;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+
   .user-card {
     display: flex;
     align-items: center;
@@ -85,6 +151,11 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .user-avatar-img {
+      background: none;
     }
 
     .user-info {
@@ -145,6 +216,12 @@
         }
       }
 
+      .user-email {
+        font-size: 0.78rem;
+        color: $text-muted;
+        margin-top: 0.1rem;
+      }
+
       .user-badge {
         display: inline-block;
         font-size: 0.68rem;
@@ -157,6 +234,30 @@
         text-transform: uppercase;
         letter-spacing: 0.04em;
       }
+    }
+  }
+
+  .sign-out-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: transparent;
+    border: 1px solid $border;
+    color: $text-secondary;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.7rem;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+    margin-bottom: 1.2rem;
+
+    &:hover {
+      border-color: $delete;
+      color: $delete;
+      background: rgba(239, 68, 68, 0.06);
     }
   }
 

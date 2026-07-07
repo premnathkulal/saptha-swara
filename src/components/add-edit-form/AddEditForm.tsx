@@ -32,9 +32,6 @@ const AddEditForm = () => {
     (store: MyStore) => store.app.showSearchFilter
   );
   const dispatch = useDispatch();
-  const isEditOptionEnabled = useSelector(
-    (store: MyStore) => store.app.isEditOption
-  );
   const editInfo = useSelector((store: MyStore) => store.app.editInfo);
   const [songInfo, setSongInfo] = useState<SongInfo>(initialSongInfo);
   const [showSelectionItem, setShowSelectionIem] = useState(true);
@@ -50,7 +47,7 @@ const AddEditForm = () => {
     if (editInfo) {
       setSongInfo(editInfo);
     }
-  }, [isEditOptionEnabled]);
+  }, [editInfo]);
 
   const handleHalfSheet = (event: MouseEvent) => {
     if ((event.target as HTMLElement).className === "half-sheet-container")

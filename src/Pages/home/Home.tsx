@@ -1,9 +1,9 @@
 import "./Home.scss";
 import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MyStore } from "../../store/store";
-// import { openAddEditOption } from "../../store/slices/app-slice";
+import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddEditForm from "../../components/add-edit-form/AddEditForm";
@@ -12,12 +12,12 @@ import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
 import { addOnlineListener } from "../../utils/offlineCache";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 type SortField = "name" | "raga" | "tala" | "type";
 
 const Home = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const songInformation = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
@@ -74,9 +74,9 @@ const Home = () => {
     );
   };
 
-  // const handleHalfSheet = () => {
-  //   dispatch(openAddEditOption(false));
-  // };
+  const handleAddSong = () => {
+    dispatch(openAddEditOption(null));
+  };
 
   const handleSortChange = (field: SortField) => {
     if (sortBy === field) {
@@ -146,6 +146,13 @@ const Home = () => {
       <div className="header-bar">
         <h1 className="app-title">Saptha Swara</h1>
         <div className="header-actions">
+          <button
+            className="add-btn"
+            onClick={handleAddSong}
+            aria-label="Add song"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
           <button
             className="theme-btn"
             onClick={toggleTheme}

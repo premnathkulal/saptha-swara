@@ -11,15 +11,20 @@ import {
   faCheck,
   faBook,
   faEdit,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useState, useEffect, useRef } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import "./Profile.scss";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const authUser = useSelector((store: MyStore) => store.app.authUser);
   const allSongs = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
   );
+  const { signInWithGoogle, signOut } = useAuth();
   const [userName, setUserName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -49,16 +54,53 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  const totalSongs = allSongs.length;
-  const favoriteSongs = allSongs.filter((s) => s.isFavorite).length;
-  const totalRagas = new Set(allSongs.map((s) => s.raga)).size;
-  const points = allSongs.reduce((p, s) => p + (s.isFavorite ? 5 : 0), 0);
-  const initials = userName
+  const displayName = authUser?.displayName || userName;
+  const displayEmail = authUser?.email || null;
+  const displayPhoto = authUser?.photoURL || null;
+  const initials = displayName
     .split(" ")
     .map((w) => w[0])
     .join("")
     .toUpperCase()
     .slice(0, 2) || "U";
+
+  const totalSongs = allSongs.length;
+  const favoriteSongs = allSongs.filter((s) => s.isFavorite).length;
+  const totalRagas = new Set(allSongs.map((s) => s.raga)).size;
+  const points = allSongs.reduce((p, s) => p + (s.isFavorite ? 5 : 0), 0);
+
+  if (!authUser) {
+    return (
+      <div className="profile">
+        <div className="header-bar">
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+          <span className="header-title">Profile</span>
+          <div className="header-points">
+            <FontAwesomeIcon icon={faAward} />
+            <span>{points}</span>
+          </div>
+        </div>
+        <div className="content">
+          <div className="auth-prompt">
+            <div className="auth-icon">
+              <FontAwesomeIcon icon={faGoogle} />
+            </div>
+            <h2 className="auth-title">Sign in to Sync</h2>
+            <p className="auth-desc">
+              Sign in with Google to sync your songs and contributions across
+              devices.
+            </p>
+            <button className="google-btn" onClick={signInWithGoogle}>
+              <FontAwesomeIcon icon={faGoogle} className="google-icon" />
+              Sign in with Google
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile">
@@ -75,7 +117,15 @@ const Profile = () => {
 
       <div className="content">
         <div className="user-card">
-          <div className="user-avatar">{initials}</div>
+          {displayPhoto ? (
+            <img
+              src={displayPhoto}
+              alt=""
+              className="user-avatar user-avatar-img"
+            />
+          ) : (
+            <div className="user-avatar">{initials}</div>
+          )}
           <div className="user-info">
             {isEditing ? (
               <div className="name-edit">
@@ -93,7 +143,7 @@ const Profile = () => {
               </div>
             ) : (
               <div className="name-display">
-                <span className="user-name">{userName}</span>
+                <span className="user-name">{displayName}</span>
                 <button
                   className="icon-btn"
                   onClick={() => setIsEditing(true)}
@@ -101,6 +151,9 @@ const Profile = () => {
                   <FontAwesomeIcon icon={faPen} />
                 </button>
               </div>
+            )}
+            {displayEmail && (
+              <div className="user-email">{displayEmail}</div>
             )}
             <div className="user-badge">Contributor</div>
           </div>
@@ -123,6 +176,10 @@ const Profile = () => {
             <div className="stat-label">Ragas</div>
           </div>
         </div>
+
+        <button className="sign-out-btn" onClick={signOut}>
+          <FontAwesomeIcon icon={faRightFromBracket} /> Sign Out
+        </button>
 
         <div className="section-title">Other Contributions</div>
         <div className="contrib-list">

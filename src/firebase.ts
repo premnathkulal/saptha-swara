@@ -1,8 +1,10 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, get, child } from "firebase/database";
+import {
+  getAuth,
+  GoogleAuthProvider,
+} from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCf-yEbbWqdytCo3ZMxVrSsximgPLxoo-w",
   authDomain: "prems-creations-9e2be.firebaseapp.com",
@@ -14,11 +16,11 @@ const firebaseConfig = {
   databaseURL: "https://prems-creations-9e2be-default-rtdb.firebaseio.com/",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
 
-// Function to write data to the database
 export function writeUserData(userId: string, name: string, email: string) {
   set(ref(db, "users/" + userId), {
     username: name,
@@ -26,7 +28,6 @@ export function writeUserData(userId: string, name: string, email: string) {
   });
 }
 
-// Function to read data from the database
 export async function readUserData(userId: string) {
   const dbRef = ref(db);
   try {

@@ -8,6 +8,13 @@ export interface VideoPlayerState {
   type: string;
 }
 
+export interface AuthUser {
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+}
+
 const appSlice = createSlice({
   name: "app",
   initialState: {
@@ -18,6 +25,7 @@ const appSlice = createSlice({
     editInfo: null,
     showSearchFilter: false,
     videoPlayer: { videoId: null, title: "", raga: "", tala: "", type: "" } as VideoPlayerState,
+    authUser: null as AuthUser | null,
   },
   reducers: {
     closeAddEditOption(state) {
@@ -27,6 +35,7 @@ const appSlice = createSlice({
     openAddEditOption(state, action) {
       document.body.style.overflow = "hidden";
       state.isAddEditOptionEnabled = true;
+      state.isEditOption = !!action.payload;
       if (action.payload) {
         state.editInfo = action.payload;
       } else {
@@ -57,6 +66,12 @@ const appSlice = createSlice({
       document.body.style.overflow = "";
       state.videoPlayer = { videoId: null, title: "", raga: "", tala: "", type: "" };
     },
+    setAuthUser(state, action) {
+      state.authUser = action.payload;
+    },
+    clearAuthUser(state) {
+      state.authUser = null;
+    },
   },
 });
 
@@ -70,5 +85,7 @@ export const {
   hideSearchFilter,
   openVideoPlayer,
   closeVideoPlayer,
+  setAuthUser,
+  clearAuthUser,
 } = appSlice.actions;
 export default appSlice.reducer;

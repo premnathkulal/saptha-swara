@@ -1,11 +1,16 @@
 import "./ListCard.scss";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
 import { useDispatch } from "react-redux";
-import { openVideoPlayer } from "../../store/slices/app-slice";
+import {
+  openVideoPlayer,
+  openAddEditOption,
+} from "../../store/slices/app-slice";
 import {
   faHeart as faHeartSolid,
   faChevronRight,
   faPlay,
+  faEllipsisV,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,15 +34,19 @@ const ListCard = (props: ListCardProps) => {
     refLink,
     isFavorite,
   } = props.songInfo;
-  const {
-    toggleFavorite,
-  } = useSongInfo();
+  const { toggleFavorite } = useSongInfo();
   const navigate = useNavigate();
   const videoId = refLink ? extractVideoId(refLink) : null;
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (id) toggleFavorite(id, !!isFavorite);
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    props.onToggleMenu();
+    dispatch(openAddEditOption(props.songInfo));
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -81,6 +90,18 @@ const ListCard = (props: ListCardProps) => {
               icon={isFavorite ? faHeartSolid : faHeartRegular}
               onClick={(e) => handleFavorite(e)}
             />
+            <div className="menu-container">
+              <button
+                className="menu-trigger"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  props.onToggleMenu();
+                }}
+                aria-label="Song menu"
+              >
+                <FontAwesomeIcon icon={faEllipsisV} />
+              </button>
+            </div>
           </div>
         </div>
         <div className="song-details">
@@ -102,6 +123,16 @@ const ListCard = (props: ListCardProps) => {
           </div>
         </div>
       </div>
+      {props.isMenuOpen && (
+        <>
+          <div className="menu-backdrop" onClick={props.onToggleMenu} />
+          <div className="menu-dropdown">
+            <button className="menu-item" onClick={handleEdit}>
+              <FontAwesomeIcon icon={faPen} /> Edit
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
