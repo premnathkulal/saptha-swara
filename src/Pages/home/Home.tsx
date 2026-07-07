@@ -26,6 +26,7 @@ const Home = () => {
   const showAddEditOption = useSelector(
     (store: MyStore) => store.app.isAddEditOptionEnabled,
   );
+  const authUser = useSelector((store: MyStore) => store.app.authUser);
   const [sortBy, setSortBy] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
@@ -171,7 +172,11 @@ const Home = () => {
             tabIndex={0}
             aria-label="Profile"
           >
-            SS
+            {authUser?.photoURL ? (
+              <img src={authUser.photoURL} alt="" className="avatar-img" />
+            ) : (
+              "SS"
+            )}
           </div>
         </div>
       </div>
