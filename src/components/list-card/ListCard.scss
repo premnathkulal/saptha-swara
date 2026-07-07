@@ -83,25 +83,25 @@
           }
         }
 
-        .menu-container {
+        .edit-btn {
+          background: $accent-subtle;
+          border: 1px solid $border-accent;
+          color: $accent-light;
+          font-size: 0.8rem;
+          cursor: pointer;
+          padding: 0.3rem;
+          border-radius: 50%;
           display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: fadeIn 0.15s ease;
+          transition: all $transition-fast;
 
-          .menu-trigger {
-            background: none;
-            border: none;
-            color: $text-muted;
-            font-size: 1.1rem;
-            cursor: pointer;
-            padding: 0.3rem 0.4rem;
-            border-radius: $radius-sm;
-            display: flex;
-            align-items: center;
-            transition: all $transition-fast;
-
-            &:hover {
-              color: $text-primary;
-              background: $accent-subtle;
-            }
+          &:hover {
+            background: $accent;
+            border-color: $accent;
+            color: #fff;
+            transform: scale(1.1);
           }
         }
       }

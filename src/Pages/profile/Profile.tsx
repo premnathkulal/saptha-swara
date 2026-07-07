@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MyStore } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
+  faChevronDown,
   faMusic,
   faStar,
   faAward,
@@ -11,11 +12,16 @@ import {
   faCheck,
   faBook,
   faEdit,
+  faPlus,
   faRightFromBracket,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { useSongInfo } from "../../hooks/api-hook/useSongInfo";
+import { openAddEditOption } from "../../store/slices/app-slice";
+import AddEditForm from "../../components/add-edit-form/AddEditForm";
 import "./Profile.scss";
 
 const Profile = () => {
@@ -24,9 +30,15 @@ const Profile = () => {
   const allSongs = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
   );
+  const dispatch = useDispatch();
+  const showAddEditOption = useSelector(
+    (store: MyStore) => store.app.isAddEditOptionEnabled,
+  );
   const { signInWithGoogle, signOut } = useAuth();
+  const { removeSongDetails } = useSongInfo();
   const [userName, setUserName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -57,14 +69,24 @@ const Profile = () => {
   const displayName = authUser?.displayName || userName;
   const displayEmail = authUser?.email || null;
   const displayPhoto = authUser?.photoURL || null;
-  const initials = displayName
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2) || "U";
+  const initials =
+    displayName
+      .split(" ")
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "U";
 
-  const totalSongs = allSongs.length;
+  const addedSongs = useMemo(
+    () => allSongs.filter((s) => s.createdBy === authUser?.uid),
+    [allSongs, authUser],
+  );
+  const editedSongs = useMemo(
+    () => allSongs.filter((s) => s.editedBy === authUser?.uid),
+    [allSongs, authUser],
+  );
+
+  const totalSongs = addedSongs.length + editedSongs.length;
   const favoriteSongs = allSongs.filter((s) => s.isFavorite).length;
   const totalRagas = new Set(allSongs.map((s) => s.raga)).size;
   const points = allSongs.reduce((p, s) => p + (s.isFavorite ? 5 : 0), 0);
@@ -144,17 +166,17 @@ const Profile = () => {
             ) : (
               <div className="name-display">
                 <span className="user-name">{displayName}</span>
-                <button
-                  className="icon-btn"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <FontAwesomeIcon icon={faPen} />
-                </button>
+                {!authUser && (
+                  <button
+                    className="icon-btn"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <FontAwesomeIcon icon={faPen} />
+                  </button>
+                )}
               </div>
             )}
-            {displayEmail && (
-              <div className="user-email">{displayEmail}</div>
-            )}
+            {displayEmail && <div className="user-email">{displayEmail}</div>}
             <div className="user-badge">Contributor</div>
           </div>
         </div>
@@ -177,38 +199,104 @@ const Profile = () => {
           </div>
         </div>
 
-        <button className="sign-out-btn" onClick={signOut}>
-          <FontAwesomeIcon icon={faRightFromBracket} /> Sign Out
-        </button>
-
-        <div className="section-title">Other Contributions</div>
-        <div className="contrib-list">
-          <div className="contrib-item">
-            <FontAwesomeIcon icon={faBook} className="ci-icon" />
-            <div className="ci-info">
-              <span className="ci-title">Raga Information</span>
-              <span className="ci-desc">Add aarohana, avarohana & details</span>
+        {authUser && (
+          <button className="add-song-card" onClick={() => dispatch(openAddEditOption(null))}>
+            <FontAwesomeIcon icon={faPlus} className="add-song-icon" />
+            <div className="add-song-text">
+              <span className="add-song-title">Add New Song</span>
+              <span className="add-song-desc">Contribute a song to the collection</span>
             </div>
-            <span className="ci-count">0</span>
+          </button>
+        )}
+
+        <div className="section-title">My Contributions</div>
+        <div className="contrib-list">
+          <div
+            className="contrib-item clickable"
+            onClick={() =>
+              setExpandedSection(expandedSection === "added" ? null : "added")
+            }
+          >
+            <FontAwesomeIcon icon={faPlus} className="ci-icon" />
+            <div className="ci-info">
+              <span className="ci-title">Songs Added</span>
+              <span className="ci-desc">
+                Songs you have contributed to the collection
+              </span>
+            </div>
+            <span className="ci-count">{addedSongs.length}</span>
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className={`ci-chevron ${expandedSection === "added" ? "open" : ""}`}
+            />
           </div>
-          <div className="contrib-item">
+          {expandedSection === "added" && addedSongs.length > 0 && (
+            <div className="contrib-sublist">
+              {addedSongs.map((s) => (
+                <div key={s.id} className="sublist-item">
+                  <div className="sublist-info">
+                    <span className="sublist-name">{s.name}</span>
+                    <span className="sublist-meta">
+                      {s.raga}
+                      {s.tala ? ` · ${s.tala}` : ""}
+                    </span>
+                  </div>
+                  <button
+                    className="sublist-delete"
+                    onClick={() => s.id && removeSongDetails(s.id)}
+                    aria-label="Delete song"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div
+            className={`contrib-item clickable ${!editedSongs.length ? "disabled" : ""}`}
+            onClick={() =>
+              editedSongs.length &&
+              setExpandedSection(expandedSection === "edited" ? null : "edited")
+            }
+          >
             <FontAwesomeIcon icon={faEdit} className="ci-icon" />
             <div className="ci-info">
-              <span className="ci-title">Song Edits</span>
-              <span className="ci-desc">Corrections & updates to songs</span>
+              <span className="ci-title">Songs Edited</span>
+              <span className="ci-desc">
+                Songs you have corrected or updated
+              </span>
             </div>
-            <span className="ci-count">0</span>
+            <span className="ci-count">{editedSongs.length}</span>
+            {editedSongs.length > 0 && (
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                className={`ci-chevron ${expandedSection === "edited" ? "open" : ""}`}
+              />
+            )}
           </div>
-          <div className="contrib-item">
-            <FontAwesomeIcon icon={faStar} className="ci-icon" />
-            <div className="ci-info">
-              <span className="ci-title">Reviews & Feedback</span>
-              <span className="ci-desc">Suggestions & quality feedback</span>
+          {expandedSection === "edited" && editedSongs.length > 0 && (
+            <div className="contrib-sublist">
+              {editedSongs.map((s) => (
+                <div key={s.id} className="sublist-item">
+                  <div className="sublist-info">
+                    <span className="sublist-name">{s.name}</span>
+                    <span className="sublist-meta">
+                      {s.raga}
+                      {s.tala ? ` · ${s.tala}` : ""}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
-            <span className="ci-count">0</span>
-          </div>
+          )}
         </div>
       </div>
+
+      <button className="sign-out-btn" onClick={signOut}>
+        <FontAwesomeIcon icon={faRightFromBracket} /> Sign Out
+      </button>
+      {showAddEditOption && <AddEditForm />}
     </div>
   );
 };

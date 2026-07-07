@@ -1,15 +1,12 @@
 import "./ListCard.scss";
 import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
-import { useDispatch } from "react-redux";
-import {
-  openVideoPlayer,
-  openAddEditOption,
-} from "../../store/slices/app-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { MyStore } from "../../store/store";
+import { openAddEditOption } from "../../store/slices/app-slice";
 import {
   faHeart as faHeartSolid,
   faChevronRight,
   faPlay,
-  faEllipsisV,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
@@ -20,12 +17,13 @@ import { extractVideoId } from "../../utils/youtube";
 interface ListCardProps {
   songInfo: SongInfo;
   index: number;
-  isMenuOpen: boolean;
-  onToggleMenu: () => void;
+  isActive: boolean;
+  onActivate: () => void;
 }
 
 const ListCard = (props: ListCardProps) => {
   const dispatch = useDispatch();
+  const authUser = useSelector((store: MyStore) => store.app.authUser);
   const {
     id,
     name,
@@ -45,35 +43,22 @@ const ListCard = (props: ListCardProps) => {
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
-    props.onToggleMenu();
     dispatch(openAddEditOption(props.songInfo));
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (target.closest(".menu-backdrop")) return;
-    if (target.classList.contains("favorite-icon")) return;
-    if (props.isMenuOpen) {
-      props.onToggleMenu();
-      return;
-    }
-    if (videoId) {
-      dispatch(openVideoPlayer({
-        videoId,
-        title: name,
-        raga: raga || "",
-        tala: tala || "",
-        type: props.songInfo.type || "",
-      }));
-    } else if (refLink) {
-      window.open(refLink, "_blank");
-    }
+    if (target.closest(".favorite-icon") || target.closest(".edit-btn")) return;
+    props.onActivate();
   };
 
   return (
     <div
       className="list-card-container"
-      onClick={(e) => handleCardClick(e)}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleCardClick(e);
+      }}
       style={{ animationDelay: `${props.index * 0.04}s` }}
     >
       <div className="list-card">
@@ -90,18 +75,15 @@ const ListCard = (props: ListCardProps) => {
               icon={isFavorite ? faHeartSolid : faHeartRegular}
               onClick={(e) => handleFavorite(e)}
             />
-            <div className="menu-container">
+            {authUser && props.isActive && (
               <button
-                className="menu-trigger"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  props.onToggleMenu();
-                }}
-                aria-label="Song menu"
+                className="edit-btn"
+                onClick={handleEdit}
+                aria-label="Edit song"
               >
-                <FontAwesomeIcon icon={faEllipsisV} />
+                <FontAwesomeIcon icon={faPen} />
               </button>
-            </div>
+            )}
           </div>
         </div>
         <div className="song-details">
@@ -123,16 +105,6 @@ const ListCard = (props: ListCardProps) => {
           </div>
         </div>
       </div>
-      {props.isMenuOpen && (
-        <>
-          <div className="menu-backdrop" onClick={props.onToggleMenu} />
-          <div className="menu-dropdown">
-            <button className="menu-item" onClick={handleEdit}>
-              <FontAwesomeIcon icon={faPen} /> Edit
-            </button>
-          </div>
-        </>
-      )}
     </div>
   );
 };

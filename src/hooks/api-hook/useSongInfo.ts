@@ -1,8 +1,9 @@
 import { onValue, ref, remove, set, update } from "firebase/database";
 import { db } from "../../firebase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showToastMessage } from "../../store/slices/app-slice";
 import { setSongInfo } from "../../store/slices/song-info-slice";
+import { MyStore } from "../../store/store";
 import { offlineCache } from "../../utils/offlineCache";
 
 export interface SongInfo {
@@ -13,10 +14,15 @@ export interface SongInfo {
   tala: string;
   refLink: string;
   isFavorite?: boolean;
+  createdBy?: string;
+  createdByName?: string;
+  editedBy?: string;
+  editedByName?: string;
 }
 
 const useSongInfo = () => {
   const dispatch = useDispatch();
+  const authUser = useSelector((store: MyStore) => store.app.authUser);
 
   const generateUUID = () => {
     let d = new Date().getTime();
@@ -43,7 +49,12 @@ const useSongInfo = () => {
 
   const setSongDetails = async (songInfo: SongInfo) => {
     const id = generateUUID();
-    const newData = { ...songInfo, id };
+    const newData: SongInfo = {
+      ...songInfo,
+      id,
+      createdBy: authUser?.uid || undefined,
+      createdByName: authUser?.displayName || undefined,
+    };
     if (!offlineCache.isOnline()) {
       await offlineCache.enqueueWrite({ type: "set", song: newData });
       dispatch(showToastMessage("Queued — will sync when online"));
@@ -58,17 +69,22 @@ const useSongInfo = () => {
   };
 
   const updateSongDetails = async (songInfo: SongInfo) => {
+    const updated: SongInfo = {
+      ...songInfo,
+      editedBy: authUser?.uid || undefined,
+      editedByName: authUser?.displayName || undefined,
+    };
     if (!offlineCache.isOnline()) {
-      await offlineCache.enqueueWrite({ type: "update", song: songInfo });
+      await offlineCache.enqueueWrite({ type: "update", song: updated });
       dispatch(showToastMessage("Queued — will sync when online"));
       const cached = (await offlineCache.getCachedSongs()) || [];
-      const idx = cached.findIndex((s) => s.id === songInfo.id);
-      if (idx !== -1) cached[idx] = songInfo;
+      const idx = cached.findIndex((s) => s.id === updated.id);
+      if (idx !== -1) cached[idx] = updated;
       await offlineCache.cacheSongs(cached);
       dispatch(setSongInfo(cached));
       return;
     }
-    await set(ref(db, `saptha-swara/songs/${songInfo.id}`), songInfo);
+    await set(ref(db, `saptha-swara/songs/${updated.id}`), updated);
     dispatch(showToastMessage("Song info updated!"));
   };
 

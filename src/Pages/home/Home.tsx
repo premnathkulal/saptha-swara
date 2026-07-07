@@ -1,23 +1,20 @@
 import "./Home.scss";
 import ListCard from "../../components/list-card/ListCard";
 import SearchBar from "../../components/search-bar/SearchBar";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { MyStore } from "../../store/store";
-import { openAddEditOption } from "../../store/slices/app-slice";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddEditForm from "../../components/add-edit-form/AddEditForm";
 import OfflineBanner from "../../components/offline-banner/OfflineBanner";
-import { SongInfo, useSongInfo } from "../../hooks/api-hook/useSongInfo";
-import { addOnlineListener } from "../../utils/offlineCache";
+import { SongInfo } from "../../hooks/api-hook/useSongInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { faMoon, faSun, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 type SortField = "name" | "raga" | "tala" | "type";
 
 const Home = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const songInformation = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
@@ -29,20 +26,16 @@ const Home = () => {
   const showAddEditOption = useSelector(
     (store: MyStore) => store.app.isAddEditOptionEnabled,
   );
-  const { readSongDetails, syncQueue } = useSongInfo();
   const [sortBy, setSortBy] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
-  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+  const [activeSongId, setActiveSongId] = useState<string | null>(null);
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    readSongDetails();
-    const unsub = addOnlineListener(() => {
-      syncQueue();
-      readSongDetails();
-    });
-    return unsub;
+    const handleClickOutside = () => setActiveSongId(null);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -72,10 +65,6 @@ const Home = () => {
     requestAnimationFrame(() =>
       requestAnimationFrame(() => html.classList.remove("theming")),
     );
-  };
-
-  const handleAddSong = () => {
-    dispatch(openAddEditOption(null));
   };
 
   const handleSortChange = (field: SortField) => {
@@ -147,13 +136,6 @@ const Home = () => {
         <h1 className="app-title">Saptha Swara</h1>
         <div className="header-actions">
           <button
-            className="add-btn"
-            onClick={handleAddSong}
-            aria-label="Add song"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-          <button
             className="theme-btn"
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -201,9 +183,9 @@ const Home = () => {
             songInfo={songInfo}
             key={songInfo.id || index}
             index={index}
-            isMenuOpen={activeMenuId === songInfo.id}
-            onToggleMenu={() =>
-              setActiveMenuId((prev) =>
+            isActive={activeSongId === songInfo.id}
+            onActivate={() =>
+              setActiveSongId((prev) =>
                 prev === songInfo.id ? null : (songInfo.id ?? null),
               )
             }
