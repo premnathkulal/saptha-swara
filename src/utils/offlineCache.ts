@@ -24,6 +24,14 @@ export const offlineCache = {
     return localforage.getItem<SongInfo[]>(SONGS_KEY);
   },
 
+  async setCached<T>(key: string, data: T): Promise<void> {
+    await localforage.setItem(key, data);
+  },
+
+  async getCached<T>(key: string): Promise<T | null> {
+    return localforage.getItem<T>(key);
+  },
+
   async enqueueWrite(op: WriteOp): Promise<void> {
     const queue = (await localforage.getItem<WriteOp[]>(WRITE_QUEUE_KEY)) || [];
     queue.push(op);

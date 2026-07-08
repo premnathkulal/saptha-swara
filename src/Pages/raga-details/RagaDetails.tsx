@@ -1,22 +1,48 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MyStore } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faMusic } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
-import { getRagaInfo, getDummySongs } from "../../data/ragas";
+import {
+  faChevronLeft,
+  faEdit,
+  faMusic,
+  faSave,
+  faSpinner,
+  faBackspace,
+  faEraser,
+} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { getDummySongs } from "../../data/ragas";
 import { useSongInfo } from "../../hooks/api-hook/useSongInfo";
+import { useRagaInfo } from "../../hooks/api-hook/useRagaInfo";
 import RagaKeyboard from "../../components/raga-keyboard/RagaKeyboard";
+import { ref, update, remove } from "firebase/database";
+import { db } from "../../firebase";
+import { showToastMessage } from "../../store/slices/app-slice";
+import type { RagaInfo } from "../../data/ragas";
 import "./RagaDetails.scss";
+
+const swaras = [
+  "S", "R₁", "R₂", "R₃",
+  "G₁", "G₂", "G₃",
+  "M₁", "M₂",
+  "P",
+  "D₁", "D₂", "D₃",
+  "N₁", "N₂", "N₃",
+  "Ṡ",
+];
 
 const RagaDetails = () => {
   const { ragaName } = useParams<{ ragaName: string }>();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const allSongs = useSelector(
     (store: MyStore) => store.songInfo.songInformation,
   );
+  const authUser = useSelector((store: MyStore) => store.app.authUser);
 
   const { readSongDetails } = useSongInfo();
+  const { getRagaInfoFromDb } = useRagaInfo();
 
   useEffect(() => {
     if (!allSongs.length) {
@@ -25,13 +51,80 @@ const RagaDetails = () => {
   }, []);
 
   const decoded = decodeURIComponent(ragaName ?? "");
-  const info = getRagaInfo(decoded);
+  const info = getRagaInfoFromDb(decoded);
   const songsInRaga = allSongs.filter(
     (s) => s.raga.toUpperCase() === decoded.toUpperCase(),
   );
   const dummySongs = getDummySongs(decoded);
   const displaySongs = songsInRaga.length ? songsInRaga : dummySongs;
   const isDummy = !songsInRaga.length && dummySongs.length;
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editForm, setEditForm] = useState<RagaInfo | null>(null);
+  const [activeScale, setActiveScale] = useState<"aarohana" | "avarohana">("aarohana");
+
+  useEffect(() => {
+    if (isEditing && info) {
+      setEditForm({ ...info });
+    }
+  }, [isEditing, info]);
+
+  const handleEditToggle = () => {
+    if (isEditing) {
+      setIsEditing(false);
+      setEditForm(null);
+    } else if (info) {
+      setEditForm({ ...info });
+      setIsEditing(true);
+    }
+  };
+
+  const appendSwara = (swara: string) => {
+    if (!editForm) return;
+    const current = editForm[activeScale];
+    const updated = current ? `${current} ${swara}` : swara;
+    setEditForm({ ...editForm, [activeScale]: updated });
+  };
+
+  const backspaceScale = () => {
+    if (!editForm) return;
+    const current = editForm[activeScale];
+    if (!current) return;
+    const parts = current.trim().split(/\s+/);
+    parts.pop();
+    setEditForm({ ...editForm, [activeScale]: parts.join(" ") });
+  };
+
+  const clearScale = () => {
+    if (!editForm) return;
+    setEditForm({ ...editForm, [activeScale]: "" });
+  };
+
+  const handleSave = async () => {
+    if (!editForm || !authUser) return;
+    setSaving(true);
+    const oldKey = decoded.trim().toLowerCase();
+    const newKey = editForm.name.trim().toLowerCase();
+    try {
+      const data = {
+        ...editForm,
+        editedBy: authUser.uid,
+        editedByName: authUser.displayName || undefined,
+      };
+      await update(ref(db, `saptha-swara/ragas/${newKey}`), data);
+      if (newKey !== oldKey) {
+        await remove(ref(db, `saptha-swara/ragas/${oldKey}`));
+      }
+      dispatch(showToastMessage("Raga details updated!"));
+      setIsEditing(false);
+      setEditForm(null);
+    } catch {
+      dispatch(showToastMessage("Failed to save"));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="raga-details">
@@ -44,7 +137,28 @@ const RagaDetails = () => {
 
       <div className="content">
         <div className="raga-header">
-          <h1>{decoded}</h1>
+          {!isEditing ? (
+            <div className="raga-title-row">
+              <h1>{decoded}</h1>
+              {info && authUser && (
+                <button className="edit-btn" onClick={handleEditToggle}>
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+              )}
+            </div>
+          ) : editForm ? (
+            <div className="edit-field">
+              <div className="edit-label">Raga Name</div>
+              <input
+                className="edit-input"
+                type="text"
+                value={editForm.name}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, name: e.target.value })
+                }
+              />
+            </div>
+          ) : null}
           <div className="raga-tags">
             {info?.melakarta ? (
               <span className="raga-tag">Melakarta #{info.melakarta}</span>
@@ -60,8 +174,22 @@ const RagaDetails = () => {
               </span>
             )}
           </div>
-          {info?.meaning && (
+          {!isEditing && info?.meaning && (
             <div className="raga-meaning">"{info.meaning}"</div>
+          )}
+          {isEditing && editForm && (
+            <div className="edit-field">
+              <div className="edit-label">Meaning</div>
+              <textarea
+                className="edit-input"
+                value={editForm.meaning || ""}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, meaning: e.target.value })
+                }
+                placeholder="Meaning of the raga name"
+                rows={2}
+              />
+            </div>
           )}
         </div>
 
@@ -88,15 +216,105 @@ const RagaDetails = () => {
               <div className="info-value">#{info.parentMelakarta}</div>
             </div>
           ) : null}
-          {info?.famousComposition ? (
+          {!isEditing && info?.famousComposition ? (
             <div className="info-card info-card-full">
               <div className="info-label">Famous Composition</div>
               <div className="info-value-sm">{info.famousComposition}</div>
             </div>
           ) : null}
+          {isEditing && editForm && (
+            <div className="info-card info-card-full">
+              <div className="info-label">Famous Composition</div>
+              <input
+                className="edit-input"
+                type="text"
+                value={editForm.famousComposition || ""}
+                onChange={(e) =>
+                  setEditForm({
+                    ...editForm,
+                    famousComposition: e.target.value,
+                  })
+                }
+                placeholder="e.g. Endaro Mahanubhavulu (Thyagaraja)"
+              />
+            </div>
+          )}
         </div>
 
-        {info ? (
+        {isEditing && editForm ? (
+          <div className="scale-card edit-scale">
+            <div className="scale-tabs">
+              <button
+                className={`scale-tab ${activeScale === "aarohana" ? "active" : ""}`}
+                onClick={() => setActiveScale("aarohana")}
+              >
+                Aarohana
+              </button>
+              <button
+                className={`scale-tab ${activeScale === "avarohana" ? "active" : ""}`}
+                onClick={() => setActiveScale("avarohana")}
+              >
+                Avarohana
+              </button>
+            </div>
+            <div className="scale-display">
+              {editForm[activeScale] || (
+                <span className="scale-placeholder">Tap swaras below</span>
+              )}
+            </div>
+            <div className="scale-actions">
+              <button
+                className="scale-action-btn"
+                onClick={backspaceScale}
+                title="Remove last swara"
+              >
+                <FontAwesomeIcon icon={faBackspace} />
+              </button>
+              <button
+                className="scale-action-btn"
+                onClick={clearScale}
+                title="Clear all"
+              >
+                <FontAwesomeIcon icon={faEraser} />
+              </button>
+            </div>
+            <div className="swara-palette">
+              {swaras.map((swara) => (
+                <button
+                  key={swara}
+                  className="swara-btn"
+                  onClick={() => appendSwara(swara)}
+                >
+                  {swara}
+                </button>
+              ))}
+            </div>
+            <div className="edit-actions">
+              <button
+                className="save-btn"
+                onClick={handleSave}
+                disabled={saving}
+              >
+                {saving ? (
+                  <FontAwesomeIcon icon={faSpinner} spin />
+                ) : (
+                  <FontAwesomeIcon icon={faSave} />
+                )}
+                <span>{saving ? "Saving..." : "Save Changes"}</span>
+              </button>
+              <button
+                className="cancel-btn"
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditForm(null);
+                }}
+                disabled={saving}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : info ? (
           <RagaKeyboard aarohana={info.aarohana} avarohana={info.avarohana} />
         ) : (
           <div className="scale-card unknown">
