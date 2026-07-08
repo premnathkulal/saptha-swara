@@ -9,7 +9,6 @@ interface Props {
 
 type KeyId = string;
 
-type Filter = "all" | "aro" | "avaro";
 type SynthType = "harmonium" | "piano";
 
 const WHITE_KEYS: { id: KeyId; label: string }[] = [
@@ -70,24 +69,14 @@ function getKeyClass(
   id: KeyId,
   aro: Set<KeyId>,
   avaro: Set<KeyId>,
-  filter: Filter,
 ): string {
   const inAro = aro.has(id);
   const inAvaro = avaro.has(id);
-
-  if (filter === "aro") return inAro ? " active aro" : "";
-  if (filter === "avaro") return inAvaro ? " active avaro" : "";
 
   if (inAro && inAvaro) return " active both";
   if (inAro) return " active aro";
   if (inAvaro) return " active avaro";
   return "";
-}
-
-interface LegendItem {
-  key: Filter;
-  label: string;
-  cls: string;
 }
 
 const PITCHES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -128,12 +117,6 @@ function scaleToNotes(scale: string, map: Record<string, string>): string[] {
   return notes;
 }
 
-const LEGEND: LegendItem[] = [
-  { key: "all", label: "Both", cls: "both" },
-  { key: "aro", label: "Aarohana", cls: "aro" },
-  { key: "avaro", label: "Avarohana", cls: "avaro" },
-];
-
 function createSynth(type: SynthType) {
   if (type === "harmonium") {
     return new Tone.Synth({
@@ -151,7 +134,6 @@ function createSynth(type: SynthType) {
 }
 
 const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
-  const [filter, setFilter] = useState<Filter>("all");
   const [saIndex, setSaIndex] = useState(0);
   const [synthType, setSynthType] = useState<SynthType>("harmonium");
   const [playing, setPlaying] = useState(false);
@@ -195,7 +177,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
   );
 
   const playScale = useCallback(
-    async (scale: string) => {
+    async (scale: string): Promise<void> => {
       await startAudio(synthType);
       setPlaying(true);
       setActiveNote(null);
@@ -204,22 +186,26 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
       if (!synth) return;
 
       clearInterval(timerRef.current);
-      let idx = 0;
 
-      const playNext = () => {
-        if (idx >= notes.length) {
-          setPlaying(false);
-          setActiveNote(null);
-          clearInterval(timerRef.current);
-          return;
-        }
-        setActiveNote(notes[idx]);
-        synth.triggerAttackRelease(notes[idx], "8n");
-        idx++;
-      };
+      return new Promise((resolve) => {
+        let idx = 0;
 
-      playNext();
-      timerRef.current = setInterval(playNext, 280);
+        const playNext = () => {
+          if (idx >= notes.length) {
+            setPlaying(false);
+            setActiveNote(null);
+            clearInterval(timerRef.current);
+            resolve();
+            return;
+          }
+          setActiveNote(notes[idx]);
+          synth.triggerAttackRelease(notes[idx], "8n");
+          idx++;
+        };
+
+        playNext();
+        timerRef.current = setInterval(playNext, 280);
+      });
     },
     [startAudio, noteMap, synthType],
   );
@@ -263,7 +249,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
             return (
               <div
                 key={key.id}
-                className={`white-key${getKeyClass(key.id, aroNotes, avaroNotes, filter)}${pressedKey === note ? " pressed" : ""}${activeNote === note ? " ringing" : ""}`}
+                className={`white-key${getKeyClass(key.id, aroNotes, avaroNotes)}${pressedKey === note ? " pressed" : ""}${activeNote === note ? " ringing" : ""}`}
                 onClick={() => playNote(note)}
               >
                 <span className="key-label">{key.label}</span>
@@ -278,7 +264,7 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
             return (
               <div
                 key={key.id}
-                className={`black-key${getKeyClass(key.id, aroNotes, avaroNotes, filter)}${pressedKey === note ? " pressed" : ""}${activeNote === note ? " ringing" : ""}`}
+                className={`black-key${getKeyClass(key.id, aroNotes, avaroNotes)}${pressedKey === note ? " pressed" : ""}${activeNote === note ? " ringing" : ""}`}
                 style={{ left: `${key.position * 44 + 30}px` }}
                 onClick={() => playNote(note)}
               >
@@ -304,20 +290,19 @@ const RagaKeyboard = ({ aarohana, avarohana }: Props) => {
         >
           Play Avarohana
         </button>
+        <button
+          className="play-scale-btn both"
+          disabled={playing}
+          onClick={async () => {
+            await playScale(aarohana);
+            await playScale(avarohana);
+          }}
+        >
+          Play Both
+        </button>
       </div>
 
-      <div className="keyboard-legend">
-        {LEGEND.map((item) => (
-          <button
-            key={item.key}
-            className={`legend-btn${filter === item.key ? " active" : ""}`}
-            onClick={() => setFilter(item.key)}
-          >
-            <span className={`legend-swatch ${item.cls}`} />
-            {item.label}
-          </button>
-        ))}
-      </div>
+
     </div>
   );
 };

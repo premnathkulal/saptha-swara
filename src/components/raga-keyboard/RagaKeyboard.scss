@@ -324,61 +324,7 @@
     }
   }
 
-  .keyboard-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    justify-content: center;
-    margin-top: 0.5rem;
 
-    .legend-btn {
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: $text-secondary;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 100px;
-      border: 1px solid $border;
-      background: $bg-card;
-      cursor: pointer;
-      transition: all 0.15s;
-
-      &:hover {
-        background: $bg-card-hover;
-      }
-
-      &.active {
-        border-color: $accent;
-        color: $accent-light;
-        background: $accent-subtle;
-      }
-
-      .legend-swatch {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 2px;
-        background: $bg-card;
-        border: 1px solid $border;
-        flex-shrink: 0;
-
-        &.aro {
-          background: rgba(139, 92, 246, 0.4);
-          border-color: rgba(139, 92, 246, 0.5);
-        }
-        &.avaro {
-          background: rgba(59, 130, 246, 0.4);
-          border-color: rgba(59, 130, 246, 0.5);
-        }
-        &.both {
-          background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(59, 130, 246, 0.4));
-          border-color: rgba(139, 92, 246, 0.5);
-        }
-      }
-    }
-  }
 }
 
 @keyframes keyFadeIn {

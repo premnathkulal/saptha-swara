@@ -132,6 +132,36 @@
         color: $text-secondary;
         font-style: italic;
       }
+
+      .carnatic-details {
+        border: none;
+
+        .carnatic-summary {
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: $text-muted;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          cursor: pointer;
+          padding: 0.3rem 0;
+          user-select: none;
+
+          &:hover {
+            color: $accent-light;
+          }
+        }
+
+        .carnatic-fields {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.6rem;
+          margin-top: 0.5rem;
+
+          .edit-field {
+            margin-top: 0;
+          }
+        }
+      }
     }
 
     .info-grid {
@@ -434,14 +464,16 @@
       .cancel-btn {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 0.4rem;
-        padding: 0.5rem 1rem;
+        padding: 0.6rem 1rem;
         border-radius: $radius-sm;
         font-size: 0.85rem;
         font-weight: 600;
         cursor: pointer;
         border: none;
         transition: all $transition-fast;
+        flex: 1;
       }
 
       .save-btn {

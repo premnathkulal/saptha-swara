@@ -74,8 +74,13 @@ const RagaDetails = () => {
     if (isEditing) {
       setIsEditing(false);
       setEditForm(null);
-    } else if (info) {
-      setEditForm({ ...info });
+    } else {
+      setEditForm(info ? { ...info } : {
+        name: decoded,
+        melakarta: 0,
+        aarohana: "",
+        avarohana: "",
+      });
       setIsEditing(true);
     }
   };
@@ -140,9 +145,9 @@ const RagaDetails = () => {
           {!isEditing ? (
             <div className="raga-title-row">
               <h1>{decoded}</h1>
-              {info && authUser && (
+              {authUser && (
                 <button className="edit-btn" onClick={handleEditToggle}>
-                  <FontAwesomeIcon icon={faEdit} />
+                  <FontAwesomeIcon icon={isEditing ? faEdit : faEdit} />
                 </button>
               )}
             </div>
@@ -160,18 +165,22 @@ const RagaDetails = () => {
             </div>
           ) : null}
           <div className="raga-tags">
-            {info?.melakarta ? (
+            {!isEditing && info?.melakarta ? (
               <span className="raga-tag">Melakarta #{info.melakarta}</span>
-            ) : info ? (
+            ) : !isEditing && info ? (
               <span className="raga-tag">Janya</span>
             ) : null}
-            {info?.chakra && (
+            {isEditing && editForm && editForm.chakra && (
+              <span className="raga-tag">{editForm.chakra} Chakra</span>
+            )}
+            {!isEditing && info?.chakra && (
               <span className="raga-tag">{info.chakra} Chakra</span>
             )}
-            {info?.parentMelakarta && (
-              <span className="raga-tag">
-                Parent: Melakarta #{info.parentMelakarta}
-              </span>
+            {isEditing && editForm && editForm.parentMelakarta ? (
+              <span className="raga-tag">Parent: Melakarta #{editForm.parentMelakarta}</span>
+            ) : null}
+            {!isEditing && info?.parentMelakarta && (
+              <span className="raga-tag">Parent: Melakarta #{info.parentMelakarta}</span>
             )}
           </div>
           {!isEditing && info?.meaning && (
@@ -194,26 +203,86 @@ const RagaDetails = () => {
         </div>
 
         <div className="info-grid">
-          {info?.chakra && (
-            <div className="info-card">
-              <div className="info-label">Chakra</div>
-              <div className="info-value">{info.chakra}</div>
-            </div>
-          )}
-          {info?.melakarta ? (
-            <div className="info-card">
-              <div className="info-label">Category</div>
-              <div className="info-value">
-                {info.melakarta >= 1 && info.melakarta <= 72
-                  ? "Melakarta"
-                  : "Janya"}
-              </div>
-            </div>
-          ) : null}
-          {info?.parentMelakarta ? (
-            <div className="info-card">
-              <div className="info-label">Parent Melakarta</div>
-              <div className="info-value">#{info.parentMelakarta}</div>
+          {!isEditing ? (
+            <>
+              {info?.chakra && (
+                <div className="info-card">
+                  <div className="info-label">Chakra</div>
+                  <div className="info-value">{info.chakra}</div>
+                </div>
+              )}
+              {info?.melakarta ? (
+                <div className="info-card">
+                  <div className="info-label">Category</div>
+                  <div className="info-value">
+                    {info.melakarta >= 1 && info.melakarta <= 72
+                      ? "Melakarta"
+                      : "Janya"}
+                  </div>
+                </div>
+              ) : null}
+              {info?.parentMelakarta ? (
+                <div className="info-card">
+                  <div className="info-label">Parent Melakarta</div>
+                  <div className="info-value">#{info.parentMelakarta}</div>
+                </div>
+              ) : null}
+            </>
+          ) : editForm ? (
+            <div className="info-card info-card-full">
+              <details className="carnatic-details">
+                <summary className="carnatic-summary">
+                  Carnatic Properties
+                </summary>
+                <div className="carnatic-fields">
+                  <div className="edit-field">
+                    <div className="edit-label">Chakra</div>
+                    <input
+                      className="edit-input"
+                      type="text"
+                      value={editForm.chakra || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, chakra: e.target.value })
+                      }
+                      placeholder="e.g. Indu"
+                    />
+                  </div>
+                  <div className="edit-field">
+                    <div className="edit-label">Melakarta Number</div>
+                    <input
+                      className="edit-input"
+                      type="number"
+                      min={0}
+                      max={72}
+                      value={editForm.melakarta || 0}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          melakarta: parseInt(e.target.value) || 0,
+                        })
+                      }
+                      placeholder="0 for janya"
+                    />
+                  </div>
+                  <div className="edit-field">
+                    <div className="edit-label">Parent Melakarta</div>
+                    <input
+                      className="edit-input"
+                      type="number"
+                      min={0}
+                      max={72}
+                      value={editForm.parentMelakarta || 0}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          parentMelakarta: parseInt(e.target.value) || undefined,
+                        })
+                      }
+                      placeholder="e.g. 28"
+                    />
+                  </div>
+                </div>
+              </details>
             </div>
           ) : null}
           {!isEditing && info?.famousComposition ? (
@@ -242,7 +311,7 @@ const RagaDetails = () => {
         </div>
 
         {isEditing && editForm ? (
-          <div className="scale-card edit-scale">
+          <><div className="scale-card edit-scale">
             <div className="scale-tabs">
               <button
                 className={`scale-tab ${activeScale === "aarohana" ? "active" : ""}`}
@@ -289,31 +358,32 @@ const RagaDetails = () => {
                 </button>
               ))}
             </div>
-            <div className="edit-actions">
-              <button
-                className="save-btn"
-                onClick={handleSave}
-                disabled={saving}
-              >
-                {saving ? (
-                  <FontAwesomeIcon icon={faSpinner} spin />
-                ) : (
-                  <FontAwesomeIcon icon={faSave} />
-                )}
-                <span>{saving ? "Saving..." : "Save Changes"}</span>
-              </button>
-              <button
-                className="cancel-btn"
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditForm(null);
-                }}
-                disabled={saving}
-              >
-                Cancel
-              </button>
-            </div>
           </div>
+          <div className="edit-actions">
+            <button
+              className="save-btn"
+              onClick={handleSave}
+              disabled={saving}
+            >
+              {saving ? (
+                <FontAwesomeIcon icon={faSpinner} spin />
+              ) : (
+                <FontAwesomeIcon icon={faSave} />
+              )}
+              <span>{saving ? "Saving..." : "Save Changes"}</span>
+            </button>
+            <button
+              className="cancel-btn"
+              onClick={() => {
+                setIsEditing(false);
+                setEditForm(null);
+              }}
+              disabled={saving}
+            >
+              Cancel
+            </button>
+          </div>
+          </>
         ) : info ? (
           <RagaKeyboard aarohana={info.aarohana} avarohana={info.avarohana} />
         ) : (
